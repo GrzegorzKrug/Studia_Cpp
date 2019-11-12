@@ -155,6 +155,9 @@
   <ItemGroup>
     <ClCompile Include="ODM_L2_DuzaMoc_Macierze.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lab2Classes.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
