@@ -2,12 +2,21 @@
 //
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <vector>
+#include "Lab2Classes.h"
 
 using namespace std;
+
+class matrix_multiply
+{
+
+};
+
 int main()
 {
+	CSVReader reader("1", "2");
 #pragma omp parallel
 	{
 
@@ -18,19 +27,9 @@ int main()
 }
 
 
-class CSVReader
-{
-	std::string fileName;
-	std::string delimeter;
 
-public:
-	CSVReader(std::string filename, std::string delm = ",") :
-		fileName(filename), delimeter(delm)
-	{ }
 
-	// Function to fetch data from a CSV File
-	std::vector<std::vector<std::string> > getData();
-};
+
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
 // Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
