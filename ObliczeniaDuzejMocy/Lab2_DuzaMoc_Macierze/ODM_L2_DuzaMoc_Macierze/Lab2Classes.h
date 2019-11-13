@@ -32,9 +32,9 @@ std::vector<std::vector<std::string>> CSVReader::getData()
 	file.close();
 
 	std::vector<std::string> row = dataList[0];
-	//int rows = (int)row[0];
-	//int cols = (int)row[1];
-	std::cout << row[0] << ", " << row[1];
+	int rows = std::stoi(row[0]);
+	int cols = std::stoi(row[1]);
+	std::cout << "Loaded Matrix: " << rows << " x " << cols;
 	//std::cout << row[1];
 
 	return dataList;
