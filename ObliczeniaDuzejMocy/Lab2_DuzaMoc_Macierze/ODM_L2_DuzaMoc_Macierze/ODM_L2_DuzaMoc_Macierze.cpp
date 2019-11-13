@@ -11,17 +11,21 @@ using namespace std;
 
 int main()
 {
-	CSVReader reader("losowy_matrix.csv");
-	std::vector<std::vector<float> > dataCSV = reader.getData();
+	CSVReader reader;
+	std::vector<std::vector<float>> matrixA = reader.getData("losowy_matrix.csv");
+	std::vector<std::vector<float>> matrixB = reader.getData("losowy_matrix2.csv");
 
-	for (std::vector<float> vec : dataCSV)
+	if (matrixA[0].size() == matrixB.size())
 	{
-		for (float data : vec)
-		{
-			std::cout << data << " ";
-		}
-		std::cout << std::endl;
+		std::cout << "Matrixes are ok." << std::endl;
+		std::vector<std::vector<float>> resultMatrix;
+
 	}
+	else
+	{
+		std::cout << "You can not multiply this" << std::endl;
+	}
+
 	//std::cout << "vector Len: " << dataCSV;
 	return 0;
 }

@@ -9,20 +9,21 @@ class CSVReader
 	std::string delimeter;
 
 public:
-	CSVReader(std::string filename, std::string delm = ",") :
-		fileName(filename), delimeter(delm)
+	CSVReader(std::string delm = ",") :
+		delimeter(delm)
 	{ }
 
 	// Function to fetch data from a CSV File
-	std::vector<std::vector<float>> getData();
+	std::vector<std::vector<float>> getData(std::string fileName);
 };
 
-std::vector<std::vector<float>> CSVReader::getData()
+std::vector<std::vector<float>> CSVReader::getData(std::string fileName)
 {
+	//std::cout << "Open file: " << fileName;
 	std::ifstream file(fileName);
 	std::vector<std::vector<std::string>> dataList;
-
 	std::string line = "";
+	std::vector<std::vector<float>> numMatrix;
 
 	while (getline(file, line))
 	{
@@ -37,10 +38,13 @@ std::vector<std::vector<float>> CSVReader::getData()
 	int cols = std::stoi(row[1]);
 	std::cout << "Loaded Matrix: " << rows << " x " << cols << std::endl;
 	//std::cout << "Vector sizes: " << dataList.size() - 1 << " x " << dataList[0].size();
-	assert(rows == (dataList.size() - 1));
-	assert(cols == (dataList[1].size()));
+	if (!((rows == (dataList.size() - 1)) && (cols == (dataList[1].size()))))
+	{
+		std::cout << "Matrix dimensions are not correct!" << std::endl;
+		return numMatrix;
+	}
 
-	std::vector<std::vector<float>> numMatrix;
+	
 	for (int i = 1; i <= rows; i++)
 	{
 		std::vector<float> row;
