@@ -9,21 +9,21 @@
 
 using namespace std;
 
-class MatrixMultiply
-{
-
-};
-
 int main()
 {
-	CSVReader reader("1", "2");
-#pragma omp parallel
+	CSVReader reader("losowy_matrix.csv");
+	std::vector<std::vector<std::string> > dataCSV = reader.getData();
+
+	/*for (std::vector<std::string> vec : dataCSV)
 	{
-
-
-		std::cout << "Hello World!\n";
-
-	}
+		for (std::string data : vec)
+		{
+			std::cout << data << " ";
+		}
+		std::cout << std::endl;
+	}*/
+	//std::cout << "vector Len: " << dataCSV;
+	return 0;
 }
 
 
