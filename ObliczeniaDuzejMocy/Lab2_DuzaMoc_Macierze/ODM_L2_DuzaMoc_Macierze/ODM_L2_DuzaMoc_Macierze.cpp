@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class matrix_multiply
+class MatrixMultiply
 {
 
 };
