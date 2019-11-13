@@ -46,7 +46,7 @@ std::vector<std::vector<float>> CSVReader::getData()
 		std::vector<float> row;
 		for (std::string text : dataList[i])
 		{
-			row.push_back(std::stoi(text));
+			row.push_back(std::stof(text));
 		}
 		numMatrix.push_back(row);
 	}
