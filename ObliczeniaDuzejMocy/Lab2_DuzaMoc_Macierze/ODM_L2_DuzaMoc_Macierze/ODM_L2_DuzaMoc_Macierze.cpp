@@ -18,8 +18,47 @@ int main()
 	if (matrixA[0].size() == matrixB.size())
 	{
 		std::cout << "Matrixes are ok." << std::endl;
-		std::vector<std::vector<float>> resultMatrix;
 
+		int n1 = 0;
+		int m1 = 0;
+		int n2 = 0;
+		int m2 = 0;
+
+		n1 = matrixA.size();
+		m1 = matrixA[0].size();
+		n2 = m1;
+		m2 = matrixB[0].size();
+
+		std::vector<std::vector<float>> resultMatrix;
+		std::vector<float> outputRow;
+		
+		// -------------------------- Calculation Loop
+
+		for (int i = 0; i < n1; i++)
+		{
+			outputRow.clear();
+			for (int j = 0; j < m2; j++)
+			{
+
+				float result = 0;
+				for (int k = 0; k < n2; k++)
+				{
+					result += matrixA[i][k] * matrixB[k][j];
+				}
+				outputRow.push_back(result);
+			}
+			resultMatrix.push_back(outputRow);
+		}
+
+		// -------------------- Display Result
+		for (auto row : resultMatrix)
+		{
+			for (float num : row)
+			{
+				std::cout << num << ", ";
+			}
+			std::cout << std::endl;
+		}
 	}
 	else
 	{
