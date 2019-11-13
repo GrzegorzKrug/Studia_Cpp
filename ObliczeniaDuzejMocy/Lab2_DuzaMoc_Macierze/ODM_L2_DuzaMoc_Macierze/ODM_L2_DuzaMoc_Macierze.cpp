@@ -12,16 +12,16 @@ using namespace std;
 int main()
 {
 	CSVReader reader("losowy_matrix.csv");
-	std::vector<std::vector<std::string> > dataCSV = reader.getData();
+	std::vector<std::vector<float> > dataCSV = reader.getData();
 
-	/*for (std::vector<std::string> vec : dataCSV)
+	for (std::vector<float> vec : dataCSV)
 	{
-		for (std::string data : vec)
+		for (float data : vec)
 		{
 			std::cout << data << " ";
 		}
 		std::cout << std::endl;
-	}*/
+	}
 	//std::cout << "vector Len: " << dataCSV;
 	return 0;
 }
