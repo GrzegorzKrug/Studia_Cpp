@@ -6,7 +6,7 @@
 
 Matrix* readFromFile(std::string matrixName);
 void saveToFile(Matrix& matrix);
-void multiply(const Matrix& A, const Matrix& B, Matrix &result);
+void multiply(const Matrix& A, const Matrix& B, Matrix& result);
 
 int main()
 {
@@ -17,11 +17,11 @@ int main()
 	//Matrix *A = readFromFile("A");
 	//Matrix *B = readFromFile("B");
 
-	Matrix *A = new Matrix("macierz.csv");
-	Matrix* B = new Matrix("macierz.csv");
+	Matrix* A = new Matrix("matrix10a");
+	Matrix* B = new Matrix("matrix10a");
 
 	// prepare the result matrix
-	Matrix *C = new Matrix(A->getN(), B->getM());
+	Matrix* C = new Matrix(A->getN(), B->getM());
 
 	// start time masurement
 	auto startTime = std::chrono::system_clock::now();
@@ -54,7 +54,7 @@ Matrix* readFromFile(std::string matrixName)
 
 	// create the matrix and return it
 	Matrix* result = new Matrix(fileName);
-	
+
 	// success info
 	std::cout << "Macierz " << matrixName << " zosta³a poprawnie wczytana." << std::endl;
 
@@ -64,16 +64,16 @@ Matrix* readFromFile(std::string matrixName)
 void saveToFile(Matrix& matrix)
 {
 	// get file name
-	std::string fileName ="output.csv";
+	std::string fileName = "output.csv";
 	//std::cout << "Podaj nazwê pliku wynikowego C = A * B: ";
-	
+
 	std::cin >> fileName;
 
 	// save matrix to file
 	matrix.writeToFile(fileName);
 }
 
-void multiply(const Matrix& A, const Matrix& B, Matrix &result)
+void multiply(const Matrix& A, const Matrix& B, Matrix& result)
 {
 	// check multiplication correctness condition
 	if (A.getN() != B.getM())
@@ -81,20 +81,26 @@ void multiply(const Matrix& A, const Matrix& B, Matrix &result)
 		std::cout << "Nie mo¿na pomno¿yæ tych macierzy!" << std::endl;
 		return;
 	}
-	
+
 	// perform the multiplication
-	int i, j, k;
-//#pragma omp		
-	//#pragma omp parallel shared(A, B, result) private(i, j, k)
+	int i = 0, j, k;
+	//#pragma omp		
+		//#pragma omp parallel shared(A, B, result) private(i, j, k)
 
-#pragma omp_set_num_threads(3)
-#pragma omp parallel
+
+	omp_set_num_threads(3);
+#pragma omp parallel shared(i, j, k)
 	{
-
-//#pragma omp_set 
-		//#pragma omp for schedule(static)
+#pragma omp for schedule()
 		for (i = 0; i < A.getM(); i++)
 		{
+			//while (true)
+
+
+
+			//if (i == omp_get_thread_num())
+
+
 			for (j = 0; j < B.getN(); j++)
 			{
 				float temp = 0;
@@ -104,8 +110,17 @@ void multiply(const Matrix& A, const Matrix& B, Matrix &result)
 				}
 				result.setAt(i, j, temp);
 				//std::string iteration = "C(" + std::to_string(i) + "," + std::to_string(j) + ") - w¹tek #" + std::to_string(omp_get_thread_num());
-				std::cout << i << std::endl;
+
 			}
+
+			std::string textBuff;
+			textBuff = std::to_string(omp_get_thread_num());
+			/*textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + " K=" + std::to_string(k) + "\n";*/
+			textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + "\n";
+			std::cout << textBuff;
+
+			//break;
 		}
-	};
+	}
 }
+
