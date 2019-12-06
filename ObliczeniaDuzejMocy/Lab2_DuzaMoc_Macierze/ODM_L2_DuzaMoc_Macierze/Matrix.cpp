@@ -2,7 +2,7 @@
 #include <fstream>
 #include "Matrix.h"
 
-Matrix::Matrix(int _m, int _n) : m(_m), n(_n)
+Matrix::Matrix(int _n, int _m) : m(_m), n(_n)
 {
 	content = new int[m * n];
 }

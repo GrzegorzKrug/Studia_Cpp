@@ -24,8 +24,8 @@ int main()
 	clock_t time0 = clock();
 	Matrix* A = new Matrix("matrices\\M1000_a");
 	Matrix* B = new Matrix("matrices\\M1000_b");
-	Matrix* C = new Matrix(A->get_n(), A->get_m());
-	Matrix* Res = new Matrix(A->get_n(), A->get_m());
+	Matrix* C = new Matrix(A->get_n(), B->get_m());
+	Matrix* Res = new Matrix(A->get_n(), B->get_m());
 	clock_t load_time = clock();
 	std::cout << "Matrices loaded in " << load_time - time0 << " ms" << endl << endl;
 	if (A->get_m() == B->get_n())
@@ -33,7 +33,7 @@ int main()
 		//std::cout << "Matrixes are ok." << std::endl;
 		// -------------------------- Calculation Loop
 		multiply_seq(*A, *B, *Res);
-		multiply_for1(*A, *B, *C, 4);
+		//multiply_for1(*A, *B, *C, 4);
 		//C->writeToFile();
 		Res->writeToFile();
 	}

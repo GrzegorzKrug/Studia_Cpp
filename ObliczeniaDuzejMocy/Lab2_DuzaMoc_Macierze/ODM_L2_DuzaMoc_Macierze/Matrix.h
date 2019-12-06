@@ -3,13 +3,13 @@
 
 class Matrix
 {
-private: int m, n;
+private: int n, m;
 		 int* content;
 
 public:
 
 	// Create Empty matrix
-	Matrix(int _n, int _m);
+	Matrix(int n, int m);
 
 	// Create Matrix and read from file
 	Matrix(std::string fileName);
