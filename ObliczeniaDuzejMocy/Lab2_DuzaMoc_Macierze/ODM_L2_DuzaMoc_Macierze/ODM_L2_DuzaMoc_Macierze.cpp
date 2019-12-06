@@ -14,7 +14,7 @@ double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result);
 double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
-
+bool check_arrays(const Matrix& C, Matrix& Res);
 using namespace std;
 
 int main()
@@ -34,19 +34,18 @@ int main()
 	// -------------------------- Calculation Loop
 	if (A->get_m() == B->get_n())
 	{
-
-
 		multiply_seq(*A, *B, *Res);
-		multiply_seq(*A, *B, *C);
+		multiply_for1(*A, *B, *C, ths_nums);
 
-		/*if (C->get_content() == Res->get_content())
-		{
-			std::cout << "Git gud" << endl;
-		}
-		else
-		{
-			std::cout << "Not cool" << endl;
-		}*/
+		check_arrays(*C, *Res);
+		multiply_for2(*A, *B, *C, ths_nums);
+
+		check_arrays(*C, *Res);
+
+		multiply_for3(*A, *B, *C, ths_nums);
+		check_arrays(*C, *Res);
+
+
 
 		//multiply_for2(*A, *B, *C, ths_nums);
 		//multiply_for3(*A, *B, *C, ths_nums);
@@ -61,6 +60,23 @@ int main()
 	std::cout << "End of excecution...";
 	//_getch();
 	return 0;
+}
+
+bool check_arrays(const Matrix& C, Matrix& Res)
+{
+	for (int row = 0; row < Res.get_n(); row++)
+	{
+		for (int col = 0; col < Res.get_m(); col++)
+		{
+			if (!(C.get_val(row, col) == Res.get_val(row, col)))
+			{
+				std::cout << "\t" << C.get_val(row, col) << " != " << Res.get_val(row, col) << endl;
+				return false;
+			}
+		}
+	}
+	std::cout << "\tGood" << endl;
+	return true;
 }
 
 double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result)
