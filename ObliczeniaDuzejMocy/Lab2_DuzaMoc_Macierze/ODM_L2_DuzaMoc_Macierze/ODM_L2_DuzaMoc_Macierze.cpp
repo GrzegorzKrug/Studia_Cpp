@@ -1,19 +1,17 @@
-﻿// ODM_L2_DuzaMoc_Macierze.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-
-#include <iostream>
+﻿#include <iostream>
 #include <sstream>
 #include <fstream>
-//#include <vector>
 #include <conio.h>
 #include "Matrix.h"
 #include <ctime>
 #include <omp.h>
-//#include "Lab2Classes.h"
+
 
 double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result);
 double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
+double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num);
 bool check_arrays(const Matrix& C, Matrix& Res);
 using namespace std;
 
@@ -49,7 +47,7 @@ int main()
 	//int ths_nums = 4;
 	if (A->get_m() == B->get_n())
 	{
-		multiply_seq(*A, *B, *Res);
+		/*multiply_seq(*A, *B, *Res);
 		Res->writeToFile();
 		multiply_for1(*A, *B, *C, 4);
 		check_arrays(*C, *Res);
@@ -68,9 +66,10 @@ int main()
 
 		multiply_for2(*A, *B, *C, 16);
 		check_arrays(*C, *Res);
+		multiply_for_with_schedule(*A, *B, *C, 4);
+		multiply_for_with_schedule(*A, *B, *C, 8);
 
-
-		Res->writeToFile();
+		//Res->writeToFile();
 	}
 	else
 	{
@@ -232,6 +231,42 @@ double multiply_for3(const Matrix& A, const Matrix& B, Matrix& Result, int threa
 
 	clock_t end_time = clock();
 	cout << "Third loop. Size: " << A.get_m() << " x " << A.get_n()
+		<< "\n\tThreads: " << std::to_string(threads_num)
+		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
+	return end_time - begin_time;
+}
+
+double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
+{
+	int row_A = 0,
+		col_B = 0,
+		element = 0,
+		res = 0;
+	clock_t begin_time = clock();
+	omp_set_num_threads(threads_num);
+	omp_set_schedule(omp_sched_t);
+#pragma omp parallel shared(A, B, Result) private(row_A, col_B, element, res)
+	{
+#pragma omp for
+		for (row_A = 0; row_A < A.get_n(); row_A++)
+		{
+			for (col_B = 0; col_B < B.get_m(); col_B++)
+			{
+				res = 0;
+				for (element = 0; element < A.get_m(); element++)
+				{
+					res += A.get_val(row_A, element) * B.get_val(element, col_B);
+				}
+				Result.set_val(row_A,
+					col_B,
+					res
+				);
+			}
+		}
+	}
+
+	clock_t end_time = clock();
+	cout << "First loop. Size: " << A.get_m() << " x " << A.get_n()
 		<< "\n\tThreads: " << std::to_string(threads_num)
 		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
 	return end_time - begin_time;
