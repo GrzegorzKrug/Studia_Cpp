@@ -18,7 +18,7 @@ using namespace std;
 
 int main()
 {
-	int size = 1200;
+	int size = 100;
 	clock_t time0 = clock();
 	Matrix* A = new Matrix(size, size);
 	Matrix* B = new Matrix(size, size);
@@ -250,7 +250,7 @@ double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Resu
 	omp_set_num_threads(threads_num);	
 #pragma omp parallel shared(A, B, Result) private(row_A, col_B, element, res)
 	{
-#pragma omp for schedule(static)
+#pragma omp for schedule(static, chunksize)
 		for (row_A = 0; row_A < A.get_n(); row_A++)
 		{
 			for (col_B = 0; col_B < B.get_m(); col_B++)
