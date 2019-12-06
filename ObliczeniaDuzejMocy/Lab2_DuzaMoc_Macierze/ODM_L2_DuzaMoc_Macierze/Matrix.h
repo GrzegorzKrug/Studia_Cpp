@@ -24,7 +24,7 @@ public:
 	int get_n() const { return n; };
 	int get_val(int row, int col) const { return content[row * m + col]; };
 
-	void set_val(int i, int j, int value);
+	void set_val(int row, int col, int value) { content[row * m + col] = value; };
 	void writeToFile(std::string fileName);
 };
 

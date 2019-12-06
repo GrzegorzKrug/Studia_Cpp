@@ -39,9 +39,12 @@ int main()
 				for (int element = 0; element < A->get_m(); element++)
 				{
 					//result += matrixA[i][k] * matrixB[k][j];
-					int val = A->get_val(row_A, element) * B->get_val(element, col_B);
-					int pre_val = C->get_val(row_A, col_B);
-					C->set_val(row_A, col_B, pre_val + val);
+					//int val = A->get_val(row_A, element) * B->get_val(element, col_B);
+					//int pre_val = C->get_val(row_A, col_B);
+					C->set_val(row_A,
+						col_B,
+						C->get_val(row_A, col_B) + A->get_val(row_A, element) * B->get_val(element, col_B)
+						);
 				}
 				//outputRow.push_back(result);
 			}
@@ -57,7 +60,7 @@ int main()
 		//		}
 		//		std::cout << std::endl;
 		//	}
-		A->writeToFile();
+		C->writeToFile();
 		cout << "Time elapsed: " << end_time - begin_time << " ms" << endl;
 	}
 	else
