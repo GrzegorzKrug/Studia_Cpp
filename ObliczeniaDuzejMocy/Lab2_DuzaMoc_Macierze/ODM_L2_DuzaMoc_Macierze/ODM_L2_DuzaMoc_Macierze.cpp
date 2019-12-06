@@ -7,6 +7,7 @@
 #include <conio.h>
 #include "Matrix.h"
 #include <ctime>
+#include <omp.h>
 //#include "Lab2Classes.h"
 
 double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result);
@@ -22,18 +23,33 @@ int main()
 	//std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
 	//std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
 	clock_t time0 = clock();
-	Matrix* A = new Matrix("matrices\\M1000_a");
-	Matrix* B = new Matrix("matrices\\M1000_b");
+	Matrix* A = new Matrix("matrices\\M100_a");
+	Matrix* B = new Matrix("matrices\\M100_b");
 	Matrix* C = new Matrix(A->get_n(), B->get_m());
 	Matrix* Res = new Matrix(A->get_n(), B->get_m());
 	clock_t load_time = clock();
 	std::cout << "Matrices loaded in " << load_time - time0 << " ms" << endl << endl;
+
+	int ths_nums = 4;
+	// -------------------------- Calculation Loop
 	if (A->get_m() == B->get_n())
 	{
-		//std::cout << "Matrixes are ok." << std::endl;
-		// -------------------------- Calculation Loop
+
+
 		multiply_seq(*A, *B, *Res);
-		//multiply_for1(*A, *B, *C, 4);
+		multiply_seq(*A, *B, *C);
+
+		/*if (C->get_content() == Res->get_content())
+		{
+			std::cout << "Git gud" << endl;
+		}
+		else
+		{
+			std::cout << "Not cool" << endl;
+		}*/
+
+		//multiply_for2(*A, *B, *C, ths_nums);
+		//multiply_for3(*A, *B, *C, ths_nums);
 		//C->writeToFile();
 		Res->writeToFile();
 	}
@@ -61,7 +77,7 @@ double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result)
 			res = 0;
 			for (element = 0; element < A.get_m(); element++)
 			{
-				res += result.get_val(row_A, col_B) + A.get_val(row_A, element) * B.get_val(element, col_B);
+				res += A.get_val(row_A, element) * B.get_val(element, col_B);
 			}
 			result.set_val(row_A,
 				col_B,
@@ -84,8 +100,13 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 		element = 0,
 		res = 0;
 	clock_t begin_time = clock();
-#pragma omp parallel
+	//omp_set_num_threads(threads_num);
+
+	omp_set_num_threads(threads_num);
+#pragma omp parallel shared(A, B) private(row_A, col_B, element, res)
 	{
+
+#pragma omp for
 		for (row_A = 0; row_A < A.get_n(); row_A++)
 		{
 			for (col_B = 0; col_B < B.get_m(); col_B++)
@@ -93,7 +114,7 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 				res = 0;
 				for (element = 0; element < A.get_m(); element++)
 				{
-					res += result.get_val(row_A, col_B) + A.get_val(row_A, element) * B.get_val(element, col_B);
+					res += A.get_val(row_A, element) * B.get_val(element, col_B);
 				}
 				result.set_val(row_A,
 					col_B,
@@ -102,8 +123,88 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 			}
 		}
 	}
+
 	clock_t end_time = clock();
-	cout << "Paraller first loop. Size: " << A.get_m() << " x " << A.get_n()
+	cout << "First loop. Size: " << A.get_m() << " x " << A.get_n()
+		<< "\n\tThreads: " << std::to_string(threads_num)
+		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
+	return end_time - begin_time;
+}
+
+double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threads_num)
+{
+	int row_A = 0,
+		col_B = 0,
+		element = 0,
+		res = 0;
+	clock_t begin_time = clock();
+	//omp_set_num_threads(threads_num);
+
+	omp_set_num_threads(threads_num);
+
+	for (row_A = 0; row_A < A.get_n(); row_A++)
+	{
+#pragma omp parallel shared(A, B, row_A) private(col_B, element, res)
+		{
+#pragma omp for
+			for (col_B = 0; col_B < B.get_m(); col_B++)
+			{
+				res = 0;
+				for (element = 0; element < A.get_m(); element++)
+				{
+					res += A.get_val(row_A, element) * B.get_val(element, col_B);
+				}
+				result.set_val(row_A,
+					col_B,
+					res
+				);
+			}
+		}
+	}
+
+	clock_t end_time = clock();
+	cout << "Second loop. Size: " << A.get_m() << " x " << A.get_n()
+		<< "\n\tThreads: " << std::to_string(threads_num)
+		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
+	return end_time - begin_time;
+}
+
+double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threads_num)
+{
+	int row_A = 0,
+		col_B = 0,
+		element = 0,
+		res = 0;
+	clock_t begin_time = clock();
+	//omp_set_num_threads(threads_num);
+
+	omp_set_num_threads(threads_num);
+
+
+	for (row_A = 0; row_A < A.get_n(); row_A++)
+	{
+
+		for (col_B = 0; col_B < B.get_m(); col_B++)
+		{
+			res = 0;
+#pragma omp parallel shared(A, B, res, row_A, col_B) private(element)
+			{
+#pragma omp for
+				for (element = 0; element < A.get_m(); element++)
+				{
+					res += A.get_val(row_A, element) * B.get_val(element, col_B);
+				}
+
+				result.set_val(row_A,
+					col_B,
+					res
+				);
+			}
+		}
+	}
+
+	clock_t end_time = clock();
+	cout << "Third loop. Size: " << A.get_m() << " x " << A.get_n()
 		<< "\n\tThreads: " << std::to_string(threads_num)
 		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
 	return end_time - begin_time;
