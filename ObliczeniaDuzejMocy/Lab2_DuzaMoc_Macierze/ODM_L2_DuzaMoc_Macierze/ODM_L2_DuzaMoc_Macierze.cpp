@@ -5,8 +5,11 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-//#include "Lab2Classes.h"
+#include <conio.h>
 #include "Matrix.h"
+//#include "Lab2Classes.h"
+
+
 
 using namespace std;
 
@@ -16,11 +19,14 @@ int main()
 	//std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
 	//std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
 
-	Matrix* A = new Matrix("matrix10a");
-	Matrix* B = new Matrix("matrix10a");
+	Matrix* A = new Matrix("M100_a");
+	Matrix* B = new Matrix("M100_b");
 
-	//if (A.get_n() == B.get_m())
-	//{
+
+	if (A->get_n() == B->get_m())
+	{
+
+	
 	//	std::cout << "Matrixes are ok." << std::endl;
 
 	//	int n1 = 0;
@@ -63,13 +69,15 @@ int main()
 	//		}
 	//		std::cout << std::endl;
 	//	}
-	//}
-	//else
-	//{
-	//	std::cout << "You can not multiply this" << std::endl;
-	//}
+	}
+	else
+	{
+		std::cout << "You can not multiply this" << std::endl;
+	}
 
 	//std::cout << "vector Len: " << dataCSV;
+	std::cout << "End of excecution...";
+	_getch();
 	return 0;
 }
 

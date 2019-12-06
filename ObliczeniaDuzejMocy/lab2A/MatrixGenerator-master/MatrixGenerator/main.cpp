@@ -27,7 +27,8 @@ int main()
 		// m - rows; n - columns
 		int m, n;
 		std::cout << "Podaj wymiary macierzy M x N: ";
-		std::cin >> m >> n;
+		std::cin >> n;
+		m = n;
 
 		// memory allocation for the matrix
 		float** matrix = allocateMatrix(m, n);
@@ -79,14 +80,14 @@ float** allocateMatrix(size_t const m, size_t const n)
 	{
 		// RNG setup
 		std::default_random_engine generator;
-		std::uniform_real_distribution<float> distribution(MIN_VALUE, MAX_VALUE);
+		//std::uniform_real_distribution<int> distribution(MIN_VALUE, MAX_VALUE);
 
 		// generate random matrix content
 		for (size_t i = 0; i < m; i++)
 		{
 			for (size_t j = 0; j < n; j++)
 			{
-				matrix[i][j] = distribution(generator);
+				matrix[i][j] = std::rand() % 100;
 			}
 		}
 	}

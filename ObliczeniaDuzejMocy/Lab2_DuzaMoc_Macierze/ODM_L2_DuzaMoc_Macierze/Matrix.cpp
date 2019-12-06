@@ -9,7 +9,17 @@ Matrix::Matrix(int _m, int _n) : m(_m), n(_n)
 
 Matrix::Matrix(std::string filename)
 {
+	std::ifstream file;
+	file.open(filename, std::ifstream::in);
+	file >> n >> m; // N -> Rows, M -> Cols
 
+	content = new int[m * n];
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			file >> content[i * m + j];
+		}
 }
 
 Matrix::~Matrix()
