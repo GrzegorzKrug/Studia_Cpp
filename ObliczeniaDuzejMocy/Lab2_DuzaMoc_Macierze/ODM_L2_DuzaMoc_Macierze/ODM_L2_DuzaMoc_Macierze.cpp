@@ -41,7 +41,7 @@ int main()
 					//result += matrixA[i][k] * matrixB[k][j];
 					int val = A->get_val(row_A, element) * B->get_val(element, col_B);
 					int pre_val = C->get_val(row_A, col_B);
-					//C->set_val(row_A, col_B, pre_val + val);
+					C->set_val(row_A, col_B, pre_val + val);
 				}
 				//outputRow.push_back(result);
 			}
