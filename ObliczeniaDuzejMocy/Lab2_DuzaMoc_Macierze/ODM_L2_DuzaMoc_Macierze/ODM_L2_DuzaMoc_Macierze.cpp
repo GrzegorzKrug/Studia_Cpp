@@ -18,57 +18,43 @@ int main()
 	//CSVReader reader;
 	//std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
 	//std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
-
-	Matrix* A = new Matrix("matrices\\M100_a");
-	Matrix* B = new Matrix("matrices\\M100_b");
+	clock_t time0 = clock();
+	Matrix* A = new Matrix("matrices\\M500_a");
+	Matrix* B = new Matrix("matrices\\M500_b");
 	Matrix* C = new Matrix(A->get_n(), A->get_m());
-
+	clock_t load_time = clock();
+	std::cout << "Matrices loaded in " << load_time - time0 << " ms" << endl;
 	if (A->get_m() == B->get_n())
 	{
-		std::cout << "Matrixes are ok." << std::endl;
-
+		//std::cout << "Matrixes are ok." << std::endl;
 		// -------------------------- Calculation Loop
+		int row_A = 0, col_B = 0, element = 0;
 		clock_t begin_time = clock();
-		for (int row_A = 0; row_A < A->get_n(); row_A++)
+		for (row_A = 0; row_A < A->get_n(); row_A++)
 		{
-			//outputRow.clear();
-			for (int col_B = 0; col_B < B->get_m(); col_B++)
+			for (col_B = 0; col_B < B->get_m(); col_B++)
 			{
-
-				//float result = 0;
-				for (int element = 0; element < A->get_m(); element++)
+				int res = 0;
+				for (element = 0; element < A->get_m(); element++)
 				{
-					//result += matrixA[i][k] * matrixB[k][j];
-					//int val = A->get_val(row_A, element) * B->get_val(element, col_B);
-					//int pre_val = C->get_val(row_A, col_B);
-					C->set_val(row_A,
-						col_B,
-						C->get_val(row_A, col_B) + A->get_val(row_A, element) * B->get_val(element, col_B)
-						);
+					res += C->get_val(row_A, col_B) + A->get_val(row_A, element) * B->get_val(element, col_B);
 				}
-				//outputRow.push_back(result);
+				C->set_val(row_A,
+					col_B,
+					res
+				);
 			}
-			//resultMatrix.push_back(outputRow);
+
 		}
 		clock_t end_time = clock();
-		//	// -------------------- Display Result
-		//	for (auto row : resultMatrix)
-		//	{
-		//		for (float num : row)
-		//		{
-		//			std::cout << num << ", ";
-		//		}
-		//		std::cout << std::endl;
-		//	}
-		C->writeToFile();
 		cout << "Time elapsed: " << end_time - begin_time << " ms" << endl;
+		C->writeToFile();
 	}
 	else
 	{
 		std::cout << "You can not multiply this" << std::endl;
 	}
 
-	//std::cout << "vector Len: " << dataCSV;
 	std::cout << "End of excecution...";
 	//_getch();
 	return 0;

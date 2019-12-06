@@ -14,7 +14,7 @@ public:
 
 	// allocate memory for the matrix and read the content from file
 	Matrix(std::string fileName);
-	
+
 	// free the memory allocated for the matrix
 	~Matrix();
 

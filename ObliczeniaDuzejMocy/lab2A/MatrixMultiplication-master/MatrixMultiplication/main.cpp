@@ -6,7 +6,50 @@
 
 Matrix* readFromFile(std::string matrixName);
 void saveToFile(Matrix& matrix);
-void multiply(const Matrix& A, const Matrix& B, Matrix& result);
+//void multiply(const Matrix& A, const Matrix& B, Matrix& result);
+
+void multiply(const Matrix& A, const Matrix& B, Matrix& result)
+{
+	// check multiplication correctness condition
+	if (A.getN() != B.getM())
+	{
+		std::cout << "Nie mo¿na pomno¿yæ tych macierzy!" << std::endl;
+		return;
+	}
+
+	// perform the multiplication
+	int i = 0, j, k;
+	//#pragma omp		
+		//#pragma omp parallel shared(A, B, result) private(i, j, k)
+
+
+	omp_set_num_threads(3);
+#pragma omp parallel shared(i, j, k)
+	{
+		//#pragma omp for schedule()
+		for (i = 0; i < A.getM(); i++)
+		{
+
+			for (j = 0; j < B.getN(); j++)
+			{
+				float temp = 0;
+				for (k = 0; k < A.getN(); k++)
+				{
+					temp = temp + A.getAt(i, k) * B.getAt(k, j);
+				}
+				result.setAt(i, j, temp);
+			}
+
+			std::string textBuff;
+			textBuff = std::to_string(omp_get_thread_num());
+			/*textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + " K=" + std::to_string(k) + "\n";*/
+			textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + "\n";
+			std::cout << textBuff;
+
+		}
+	}
+}
+
 
 int main()
 {
@@ -73,54 +116,4 @@ void saveToFile(Matrix& matrix)
 	matrix.writeToFile(fileName);
 }
 
-void multiply(const Matrix& A, const Matrix& B, Matrix& result)
-{
-	// check multiplication correctness condition
-	if (A.getN() != B.getM())
-	{
-		std::cout << "Nie mo¿na pomno¿yæ tych macierzy!" << std::endl;
-		return;
-	}
-
-	// perform the multiplication
-	int i = 0, j, k;
-	//#pragma omp		
-		//#pragma omp parallel shared(A, B, result) private(i, j, k)
-
-
-	omp_set_num_threads(3);
-#pragma omp parallel shared(i, j, k)
-	{
-#pragma omp for schedule()
-		for (i = 0; i < A.getM(); i++)
-		{
-			//while (true)
-
-
-
-			//if (i == omp_get_thread_num())
-
-
-			for (j = 0; j < B.getN(); j++)
-			{
-				float temp = 0;
-				for (k = 0; k < A.getN(); k++)
-				{
-					temp = temp + A.getAt(i, k) * B.getAt(k, j);
-				}
-				result.setAt(i, j, temp);
-				//std::string iteration = "C(" + std::to_string(i) + "," + std::to_string(j) + ") - w¹tek #" + std::to_string(omp_get_thread_num());
-
-			}
-
-			std::string textBuff;
-			textBuff = std::to_string(omp_get_thread_num());
-			/*textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + " K=" + std::to_string(k) + "\n";*/
-			textBuff = "Watek:" + textBuff + " i= " + std::to_string(i) + "\n";
-			std::cout << textBuff;
-
-			//break;
-		}
-	}
-}
 
