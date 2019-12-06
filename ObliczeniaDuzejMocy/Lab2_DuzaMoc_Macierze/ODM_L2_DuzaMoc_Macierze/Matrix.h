@@ -4,7 +4,7 @@
 class Matrix
 {
 private: int n, m;
-		 int* content;
+		 int *content;
 
 public:
 
@@ -19,7 +19,7 @@ public:
 
 	void Matrix::writeToFile();
 
-	int* get_content() { return content; };
+	int *get_content() { return content; };
 	int get_m() const { return m; };
 	int get_n() const { return n; };
 	int get_val(int row, int col) const { return content[row * m + col]; };
