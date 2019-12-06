@@ -12,8 +12,8 @@ using namespace std;
 int main()
 {
 	CSVReader reader;
-	std::vector<std::vector<float>> matrixA = reader.getData("losowy_matrix.csv");
-	std::vector<std::vector<float>> matrixB = reader.getData("losowy_matrix2.csv");
+	std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
+	std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
 
 	if (matrixA[0].size() == matrixB.size())
 	{
