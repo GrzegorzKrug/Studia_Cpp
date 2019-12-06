@@ -32,7 +32,7 @@ void Matrix::writeToFile()
 {
 	// open the file
 	std::ofstream file;
-	file.open("Result_Matrix", std::ofstream::out);
+	file.open("M" + std::to_string(m) + "_Result", std::ofstream::out);
 
 	// save the dimentions
 	file << m << " " << n << std::endl;
