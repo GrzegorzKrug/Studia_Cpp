@@ -9,7 +9,10 @@
 #include <ctime>
 //#include "Lab2Classes.h"
 
-
+double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result);
+double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result);
+double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result);
+double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result);
 
 using namespace std;
 
@@ -28,26 +31,7 @@ int main()
 	{
 		//std::cout << "Matrixes are ok." << std::endl;
 		// -------------------------- Calculation Loop
-		int row_A = 0, col_B = 0, element = 0;
-		clock_t begin_time = clock();
-		for (row_A = 0; row_A < A->get_n(); row_A++)
-		{
-			for (col_B = 0; col_B < B->get_m(); col_B++)
-			{
-				int res = 0;
-				for (element = 0; element < A->get_m(); element++)
-				{
-					res += C->get_val(row_A, col_B) + A->get_val(row_A, element) * B->get_val(element, col_B);
-				}
-				C->set_val(row_A,
-					col_B,
-					res
-				);
-			}
-
-		}
-		clock_t end_time = clock();
-		cout << "Time elapsed: " << end_time - begin_time << " ms" << endl;
+		multiply_seq(*A, *B, *C);
 		C->writeToFile();
 	}
 	else
@@ -60,7 +44,34 @@ int main()
 	return 0;
 }
 
-
+double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result)
+{
+	int row_A = 0,
+		col_B = 0,
+		element = 0,
+		res = 0;
+	clock_t begin_time = clock();
+	for (row_A = 0; row_A < A.get_n(); row_A++)
+	{
+		for (col_B = 0; col_B < B.get_m(); col_B++)
+		{
+			res = 0;
+			for (element = 0; element < A.get_m(); element++)
+			{
+				res += result.get_val(row_A, col_B) + A.get_val(row_A, element) * B.get_val(element, col_B);
+			}
+			result.set_val(row_A,
+				col_B,
+				res
+			);
+		}
+	}
+	clock_t end_time = clock();
+	cout << "Sequential Multiply of " << A.get_m() << " x " << A.get_n()
+		<< "\nThreads: " << "1"
+		<< "\nTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
+	return end_time - begin_time;
+}
 
 
 
