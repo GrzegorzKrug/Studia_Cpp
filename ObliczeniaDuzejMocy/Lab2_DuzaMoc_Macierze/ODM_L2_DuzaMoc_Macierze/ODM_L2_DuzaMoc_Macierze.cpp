@@ -109,7 +109,7 @@ double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result)
 }
 
 
-double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threads_num)
+double multiply_for1(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
 {
 	int row_A = 0,
 		col_B = 0,
@@ -119,7 +119,7 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 	//omp_set_num_threads(threads_num);
 
 	omp_set_num_threads(threads_num);
-#pragma omp parallel shared(A, B) private(row_A, col_B, element, res)
+#pragma omp parallel shared(A, B, Result) private(row_A, col_B, element, res)
 	{
 
 #pragma omp for
@@ -132,7 +132,7 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 				{
 					res += A.get_val(row_A, element) * B.get_val(element, col_B);
 				}
-				result.set_val(row_A,
+				Result.set_val(row_A,
 					col_B,
 					res
 				);
@@ -147,20 +147,18 @@ double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threa
 	return end_time - begin_time;
 }
 
-double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threads_num)
+double multiply_for2(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
 {
 	int row_A = 0,
 		col_B = 0,
 		element = 0,
 		res = 0;
 	clock_t begin_time = clock();
-	//omp_set_num_threads(threads_num);
-
 	omp_set_num_threads(threads_num);
 
 	for (row_A = 0; row_A < A.get_n(); row_A++)
 	{
-#pragma omp parallel shared(A, B, row_A) private(col_B, element, res)
+#pragma omp parallel shared(A, B, row_A, Result) private(col_B, element, res)
 		{
 #pragma omp for
 			for (col_B = 0; col_B < B.get_m(); col_B++)
@@ -170,7 +168,7 @@ double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threa
 				{
 					res += A.get_val(row_A, element) * B.get_val(element, col_B);
 				}
-				result.set_val(row_A,
+				Result.set_val(row_A,
 					col_B,
 					res
 				);
@@ -185,7 +183,7 @@ double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threa
 	return end_time - begin_time;
 }
 
-double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threads_num)
+double multiply_for3(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
 {
 	int row_A = 0,
 		col_B = 0,
@@ -203,7 +201,7 @@ double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threa
 		for (col_B = 0; col_B < B.get_m(); col_B++)
 		{
 			res = 0;
-#pragma omp parallel shared(A, B, res, row_A, col_B) private(element)
+#pragma omp parallel shared(A, B, Result, res, row_A, col_B) private(element)
 			{
 #pragma omp for
 				for (element = 0; element < A.get_m(); element++)
@@ -211,7 +209,7 @@ double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threa
 					res += A.get_val(row_A, element) * B.get_val(element, col_B);
 				}
 
-				result.set_val(row_A,
+				Result.set_val(row_A,
 					col_B,
 					res
 				);
