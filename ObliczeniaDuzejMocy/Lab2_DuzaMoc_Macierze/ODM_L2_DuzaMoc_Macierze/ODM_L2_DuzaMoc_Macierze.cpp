@@ -11,14 +11,14 @@ double multiply_seq(const Matrix& A, const Matrix& B, Matrix& result);
 double multiply_for1(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for2(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
 double multiply_for3(const Matrix& A, const Matrix& B, Matrix& result, int threads_num);
-double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num);
+double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num, int chunksize);
 bool check_arrays(const Matrix& C, Matrix& Res);
 using namespace std;
 
 
 int main()
 {
-	int size = 500;
+	int size = 1200;
 	clock_t time0 = clock();
 	Matrix* A = new Matrix(size, size);
 	Matrix* B = new Matrix(size, size);
@@ -66,9 +66,13 @@ int main()
 
 		multiply_for2(*A, *B, *C, 16);
 		check_arrays(*C, *Res);*/
-		multiply_for_with_schedule(*A, *B, *C, 4);
-		multiply_for_with_schedule(*A, *B, *C, 8);
+		multiply_for_with_schedule(*A, *B, *C, 2, 1);
+		multiply_for_with_schedule(*A, *B, *C, 4, 1);
+		multiply_for_with_schedule(*A, *B, *C, 8, 1);
 
+		multiply_for_with_schedule(*A, *B, *C, 2, 10);
+		multiply_for_with_schedule(*A, *B, *C, 4, 10);
+		multiply_for_with_schedule(*A, *B, *C, 8, 10);
 		//Res->writeToFile();
 	}
 	else
@@ -236,18 +240,17 @@ double multiply_for3(const Matrix& A, const Matrix& B, Matrix& Result, int threa
 	return end_time - begin_time;
 }
 
-double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
+double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num, int chunksize)
 {
 	int row_A = 0,
 		col_B = 0,
 		element = 0,
 		res = 0;
 	clock_t begin_time = clock();
-	omp_set_num_threads(threads_num);
-	omp_set_schedule(omp_sched_t);
+	omp_set_num_threads(threads_num);	
 #pragma omp parallel shared(A, B, Result) private(row_A, col_B, element, res)
 	{
-#pragma omp for
+#pragma omp for schedule(static)
 		for (row_A = 0; row_A < A.get_n(); row_A++)
 		{
 			for (col_B = 0; col_B < B.get_m(); col_B++)
@@ -268,6 +271,7 @@ double multiply_for_with_schedule(const Matrix& A, const Matrix& B, Matrix& Resu
 	clock_t end_time = clock();
 	cout << "First loop. Size: " << A.get_m() << " x " << A.get_n()
 		<< "\n\tThreads: " << std::to_string(threads_num)
+		<< "\n\tChunksize: " << std::to_string(chunksize)
 		<< "\n\tTime elapsed: " << (double)(end_time - begin_time) / 1000 << " s" << endl;
 	return end_time - begin_time;
 }
