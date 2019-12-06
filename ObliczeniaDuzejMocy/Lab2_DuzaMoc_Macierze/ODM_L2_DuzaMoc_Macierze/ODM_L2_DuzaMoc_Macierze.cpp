@@ -65,7 +65,7 @@ int main()
 		check_arrays(*C, *Res);
 
 		multiply_for2(*A, *B, *C, 16);
-		check_arrays(*C, *Res);
+		check_arrays(*C, *Res);*/
 		multiply_for_with_schedule(*A, *B, *C, 4);
 		multiply_for_with_schedule(*A, *B, *C, 8);
 
