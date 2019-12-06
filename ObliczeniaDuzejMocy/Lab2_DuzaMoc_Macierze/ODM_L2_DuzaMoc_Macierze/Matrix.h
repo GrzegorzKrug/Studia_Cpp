@@ -9,7 +9,7 @@ private: int m, n;
 public:
 
 	// Create Empty matrix
-	Matrix(int _m, int _n);
+	Matrix(int _n, int _m);
 
 	// Create Matrix and read from file
 	Matrix(std::string fileName);
