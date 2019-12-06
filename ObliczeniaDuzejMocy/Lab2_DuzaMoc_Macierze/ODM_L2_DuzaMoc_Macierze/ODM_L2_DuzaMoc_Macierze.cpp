@@ -5,65 +5,69 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "Lab2Classes.h"
+//#include "Lab2Classes.h"
+#include "Matrix.h"
 
 using namespace std;
 
 int main()
 {
-	CSVReader reader;
-	std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
-	std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
+	//CSVReader reader;
+	//std::vector<std::vector<float>> matrixA = reader.getData("M100_a");
+	//std::vector<std::vector<float>> matrixB = reader.getData("M100_b");
 
-	if (matrixA[0].size() == matrixB.size())
-	{
-		std::cout << "Matrixes are ok." << std::endl;
+	Matrix* A = new Matrix("matrix10a");
+	Matrix* B = new Matrix("matrix10a");
 
-		int n1 = 0;
-		int m1 = 0;
-		int n2 = 0;
-		int m2 = 0;
+	//if (A.get_n() == B.get_m())
+	//{
+	//	std::cout << "Matrixes are ok." << std::endl;
 
-		n1 = matrixA.size();
-		m1 = matrixA[0].size();
-		n2 = m1;
-		m2 = matrixB[0].size();
+	//	int n1 = 0;
+	//	int m1 = 0;
+	//	int n2 = 0;
+	//	int m2 = 0;
 
-		std::vector<std::vector<float>> resultMatrix;
-		std::vector<float> outputRow;
-		
-		// -------------------------- Calculation Loop
+	//	n1 = matrixA.size();
+	//	m1 = matrixA[0].size();
+	//	n2 = m1;
+	//	m2 = matrixB[0].size();
 
-		for (int i = 0; i < n1; i++)
-		{
-			outputRow.clear();
-			for (int j = 0; j < m2; j++)
-			{
+	//	std::vector<std::vector<float>> resultMatrix;
+	//	std::vector<float> outputRow;
+	//	
+	//	// -------------------------- Calculation Loop
 
-				float result = 0;
-				for (int k = 0; k < n2; k++)
-				{
-					result += matrixA[i][k] * matrixB[k][j];
-				}
-				outputRow.push_back(result);
-			}
-			resultMatrix.push_back(outputRow);
-		}
+	//	for (int i = 0; i < n1; i++)
+	//	{
+	//		outputRow.clear();
+	//		for (int j = 0; j < m2; j++)
+	//		{
 
-		// -------------------- Display Result
-		for (auto row : resultMatrix)
-		{
-			for (float num : row)
-			{
-				std::cout << num << ", ";
-			}
-			std::cout << std::endl;
-		}
-	}
-	else
-	{
-		std::cout << "You can not multiply this" << std::endl;
-	}
+	//			float result = 0;
+	//			for (int k = 0; k < n2; k++)
+	//			{
+	//				result += matrixA[i][k] * matrixB[k][j];
+	//			}
+	//			outputRow.push_back(result);
+	//		}
+	//		resultMatrix.push_back(outputRow);
+	//	}
+
+	//	// -------------------- Display Result
+	//	for (auto row : resultMatrix)
+	//	{
+	//		for (float num : row)
+	//		{
+	//			std::cout << num << ", ";
+	//		}
+	//		std::cout << std::endl;
+	//	}
+	//}
+	//else
+	//{
+	//	std::cout << "You can not multiply this" << std::endl;
+	//}
 
 	//std::cout << "vector Len: " << dataCSV;
 	return 0;

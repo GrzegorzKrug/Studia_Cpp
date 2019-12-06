@@ -155,10 +155,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="ODM_L2_DuzaMoc_Macierze.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lab2Classes.h" />
+    <ClInclude Include="Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
