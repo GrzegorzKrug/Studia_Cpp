@@ -2,12 +2,34 @@
 //
 
 #include <iostream>
-#include <tbb>
+#include <tbb/tbb.h>
+#include <string.h>
+
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+
+	//std::cout << "Hello World!\n";
+	tbb::parallel_invoke(
+		[]() {std::cout << "Hello TBB!"; },
+	[]() {std::cout << "Hello TBB!"; }
+	);
+
+
 }
+
+
+
+//class ClassA
+//{
+//public:
+//	string name = "Klasa_A";
+//	int a = 5;
+//	int b = 10;
+//
+//};
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
