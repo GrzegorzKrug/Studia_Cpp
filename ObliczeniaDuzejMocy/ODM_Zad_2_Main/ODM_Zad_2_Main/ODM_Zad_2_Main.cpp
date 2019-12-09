@@ -13,7 +13,7 @@ int main()
 	//std::cout << "Hello World!\n";
 	tbb::parallel_invoke(
 		[]() {std::cout << "Hello TBB!"; },
-	[]() {std::cout << "Hello TBB!"; }
+		[]() {std::cout << "Hello TBB!"; }
 	);
 
 
