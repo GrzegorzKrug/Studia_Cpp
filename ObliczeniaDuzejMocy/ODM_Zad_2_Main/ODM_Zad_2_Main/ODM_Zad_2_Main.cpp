@@ -8,7 +8,7 @@
 using namespace std;
 using namespace tbb;
 
-void zad1()
+void zad1a()
 {
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
@@ -19,14 +19,21 @@ void zad1()
 	tick_count time_end = tick_count::now();
 	std::cout << "\nTime elapsed: " << (time_end - time0).seconds() / 1000 << " ms";
 }
+
+void print_hello()
+{
+	std::cout << "Hello World!";
+}
+
 int main()
 {
 
-	//zad1();
+	zad1a();
 
 
 
 }
+
 
 
 
