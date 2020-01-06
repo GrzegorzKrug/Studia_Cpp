@@ -9,12 +9,16 @@ using namespace std;
 
 int main()
 {
-
+	using namespace tbb;
 	//std::cout << "Hello World!\n";
+	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
 		[]() {std::cout << "Hello TBB!"; },
 		[]() {std::cout << "Hello TBB!"; }
 	);
+
+	tick_count time_end = tick_count::now();
+	std::cout << "\nTime elapsed: " << (time_end - time0).seconds()/1000 << " ms";
 
 
 }
