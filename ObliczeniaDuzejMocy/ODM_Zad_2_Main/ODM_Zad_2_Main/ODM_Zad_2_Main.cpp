@@ -12,9 +12,19 @@ void zad1a()
 {
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
-		[]() {std::cout << "Hello TBB!"; },
-		[]() {std::cout << "Hello TBB!"; }
-	);
+		[]() {
+			for (int i = 0; 0 < 8; i++) {
+				std::cout << "1 Hello TBB!";
+			};
+			return NULL;
+		},
+		[]() {
+			for (int i = 0; 0 < 8; i++) {
+				std::cout << "2 Hello TBB!";
+			};
+			return NULL;
+		}
+		);
 
 	tick_count time_end = tick_count::now();
 	std::cout << "\nTime elapsed: " << (time_end - time0).seconds() / 1000 << " ms";
