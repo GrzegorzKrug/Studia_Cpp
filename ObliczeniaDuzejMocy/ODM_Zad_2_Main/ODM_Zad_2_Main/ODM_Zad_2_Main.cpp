@@ -6,11 +6,10 @@
 #include <string.h>
 
 using namespace std;
+using namespace tbb;
 
-int main()
+void zad1()
 {
-	using namespace tbb;
-	//std::cout << "Hello World!\n";
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
 		[]() {std::cout << "Hello TBB!"; },
@@ -18,7 +17,13 @@ int main()
 	);
 
 	tick_count time_end = tick_count::now();
-	std::cout << "\nTime elapsed: " << (time_end - time0).seconds()/1000 << " ms";
+	std::cout << "\nTime elapsed: " << (time_end - time0).seconds() / 1000 << " ms";
+}
+int main()
+{
+
+	//zad1();
+
 
 
 }
