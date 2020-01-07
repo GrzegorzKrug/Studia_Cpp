@@ -24,8 +24,8 @@ void run_10_times(float (*ptr)())
 	//{
 	//	cout << czas.seconds << endl;
 	//}
-	for (int i = 0; i < 10; i++) {
-		cout << czasy[i] << " ms" << endl;
+	for (float czas: czasy) {
+		cout << czas << " ms" << endl;
 	}
 }
 
@@ -48,9 +48,6 @@ float zad1_lambda()
 		);
 	tick_count time_end = tick_count::now();
 	float duration = (time_end - time0).seconds();
-
-	std::cout << "\nTime elapsed: " << duration / 1000 << " ms";
-
 	return duration;
 }
 
