@@ -25,7 +25,7 @@ void run_10_times(float (*ptr)())
 	//	cout << czas.seconds << endl;
 	//}
 	for (int i = 0; i < 10; i++) {
-		cout << czasy[i] << endl;
+		cout << czasy[i] << " ms" << endl;
 	}
 }
 
@@ -39,7 +39,6 @@ float zad1_lambda()
 				std::cout << text;
 			};
 		},
-
 		[]() {
 			for (int i = 0; i < 8; i++) {
 				string text = "Hello TBB " + to_string(i + 8) + "! ";
