@@ -8,17 +8,17 @@
 using namespace std;
 using namespace tbb;
 
-void run_10_times(tick_count::interval_t* func)
+void run_10_times(void (*ptr)())
 {
 	vector<tick_count::interval_t> czasy;
-	*func();
+	(*ptr)();
 
 	for (int i = 0; i < 10; i++) {
 		//czasy.push_back(*func());
 	}
 }
 
-tick_count::interval_t zad1_lambda()
+void zad1_lambda()
 {
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
@@ -40,7 +40,7 @@ tick_count::interval_t zad1_lambda()
 	tick_count::interval_t duration = tick_count::now() - time0;
 	std::cout << "\nTime elapsed: " << duration.seconds() / 1000 << " ms";
 
-	return duration;
+	//return duration;
 }
 
 void print_hello()
@@ -50,12 +50,9 @@ void print_hello()
 
 int main()
 {
+	void (*ptr)() = &zad1_lambda;
 
-
-	run_10_times(*zad1_lambda);
-
-
-
+	run_10_times(ptr);
 
 }
 
