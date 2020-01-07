@@ -8,25 +8,17 @@
 using namespace std;
 using namespace tbb;
 
-void run_10_times(float (*ptr)())
-{
-	vector<float> czasy;
+float run_10_times(float (*ptr)())
+{	
+	const int N = 10;
+	float sum_times = 0;
 	float last;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < N; i++) {
 		last = (*ptr)();
-		czasy.push_back(last);
-		//cout << endl << "czasyyyyyyyyyyyyyyyy: " << last << endl;
-	}
-
-	cout << "Wszystkie czasy: " << endl;
-
-	//for (auto czas : czasy)
-	//{
-	//	cout << czas.seconds << endl;
-	//}
-	for (float czas: czasy) {
-		cout << czas << " ms" << endl;
-	}
+		sum_times += last;
+		
+	}	
+	return sum_times / N;
 }
 
 float zad1_lambda()
@@ -51,15 +43,23 @@ float zad1_lambda()
 	return duration;
 }
 
-void print_hello()
-{
-	std::cout << "Hello World!";
-}
+//class PrintHello
+//{
+//public:
+//	void operator() ()
+//	{
+//		for (int i = 0; i < 8; i++) {
+//			string text = "Hello TBB " + to_string(i + 8) + "! ";
+//			std::cout << text;
+//		};
+//	}
+//
+//};
 
 int main()
 {
 	float(*ptr_zad1)() = &zad1_lambda;
-	run_10_times(ptr_zad1);
+	float time1_a = run_10_times(ptr_zad1);
 
 
 
@@ -67,25 +67,3 @@ int main()
 }
 
 
-
-
-//class ClassA
-//{
-//public:
-//	string name = "Klasa_A";
-//	int a = 5;
-//	int b = 10;
-//
-//};
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
