@@ -8,26 +8,39 @@
 using namespace std;
 using namespace tbb;
 
-void zad1a()
+void run_10_times(tick_count::interval_t* func)
+{
+	vector<tick_count::interval_t> czasy;
+	*func();
+
+	for (int i = 0; i < 10; i++) {
+		//czasy.push_back(*func());
+	}
+}
+
+tick_count::interval_t zad1_lambda()
 {
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
 		[]() {
-			for (int i = 0; 0 < 8; i++) {
-				std::cout << "1 Hello TBB!";
+			for (int i = 0; i < 8; i++) {
+				string text = "Hello TBB " + to_string(i) + "! ";
+				std::cout << text;
 			};
-			return NULL;
 		},
+
 		[]() {
-			for (int i = 0; 0 < 8; i++) {
-				std::cout << "2 Hello TBB!";
+			for (int i = 0; i < 8; i++) {
+				string text = "Hello TBB " + to_string(i + 8) + "! ";
+				std::cout << text;
 			};
-			return NULL;
 		}
 		);
 
-	tick_count time_end = tick_count::now();
-	std::cout << "\nTime elapsed: " << (time_end - time0).seconds() / 1000 << " ms";
+	tick_count::interval_t duration = tick_count::now() - time0;
+	std::cout << "\nTime elapsed: " << duration.seconds() / 1000 << " ms";
+
+	return duration;
 }
 
 void print_hello()
@@ -38,7 +51,9 @@ void print_hello()
 int main()
 {
 
-	zad1a();
+
+	run_10_times(*zad1_lambda);
+
 
 
 
