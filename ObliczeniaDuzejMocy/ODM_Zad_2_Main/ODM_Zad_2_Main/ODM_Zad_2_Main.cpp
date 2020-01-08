@@ -59,7 +59,6 @@ public:
 float zad1_klasa()
 {
 	PrintHello app1;
-
 	tick_count time0 = tick_count::now();
 	tbb::parallel_invoke(
 		app1,
@@ -76,13 +75,13 @@ float zad1_klasa()
 
 int main()
 {
-	float(*ptr_zad1_a)() = &zad1_lambda;
-	float time1_a = run_10_times(ptr_zad1_a);
+	//float(*ptr_zad1_a)() = &zad1_lambda;
+	//float time1_a = run_10_times(ptr_zad1_a);
+	float time1_a = zad1_lambda();
 
-
-	float(*ptr_zad1_b)() = &zad1_klasa;	
-	//float time1_a = run_10_times(ptr_zad1_b);
-	zad1_klasa();
+	//float(*ptr_zad1_b)() = &zad1_klasa;	
+	//float time1_a = run_10_times(ptr_zad1_b); // To nie dzia³a
+	float time1_b = zad1_klasa();
 
 }
 
