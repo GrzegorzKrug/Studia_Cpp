@@ -5,7 +5,7 @@
 #include <tbb/tbb.h>
 #include <string.h>
 #include "zad1.h"
-#include "zad1.cpp"
+//#include "zad1.cpp"
 
 using namespace std;
 using namespace tbb;

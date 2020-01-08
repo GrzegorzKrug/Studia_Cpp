@@ -3,6 +3,6 @@ class PrintHello
 {
 public:
 	//void operator() () const;
-	PrintHello& operator() ();
+	PrintHello& operator()();
 
 };

@@ -5,13 +5,14 @@
 
 using namespace std;
 
-inline PrintHello& PrintHello::operator() ()
+PrintHello& PrintHello::operator() ()
 {
 	for (int i = 0; i < 8; i++) {
-		//string text = "Hello TBB " + to_string(i + 8) + "! ";
-		//std::cout << text;
-		cout << i << endl;
+		string text = "Hello TBB " + to_string(i + 8) + "! ";
+		std::cout << text;
+		//cout << i << endl;
 	};
+	return *this;
 }
 
 //float zad1_lambda()
