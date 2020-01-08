@@ -154,10 +154,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="obiekty.cpp" />
     <ClCompile Include="ODM_Zad_2_Main.cpp" />
     <ClCompile Include="zad1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="obiekty.h" />
     <ClInclude Include="zad1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

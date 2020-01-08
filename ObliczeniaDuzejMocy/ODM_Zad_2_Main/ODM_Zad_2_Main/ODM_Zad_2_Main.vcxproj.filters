@@ -24,10 +24,16 @@
     <ClCompile Include="zad1.cpp">
       <Filter>Source Files\TBB</Filter>
     </ClCompile>
+    <ClCompile Include="obiekty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zad1.h">
       <Filter>Source Files\TBB</Filter>
+    </ClInclude>
+    <ClInclude Include="obiekty.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

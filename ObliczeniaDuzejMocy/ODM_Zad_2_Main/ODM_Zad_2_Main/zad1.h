@@ -1,11 +1,6 @@
 #pragma once
-class PrintHello
-{
-public:
-	//void operator() () const;
-	PrintHello& operator()();
 
-};
+float zad1_lambda();
+float zad1_klasa();
 
-
-//float zad1_lambda();
+//static float zad1_pointer_to_function();
