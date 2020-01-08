@@ -33,6 +33,7 @@ public:
 	}
 
 };
+
 static float zad1_lambda()
 {
 	tick_count time0 = tick_count::now();
