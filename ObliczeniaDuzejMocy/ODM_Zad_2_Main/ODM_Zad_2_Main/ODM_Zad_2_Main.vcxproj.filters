@@ -21,13 +21,5 @@
     <ClCompile Include="ODM_Zad_2_Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zad1.cpp">
-      <Filter>Source Files\TBB</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="zad1.h">
-      <Filter>Source Files\TBB</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
