@@ -10,7 +10,7 @@ inline PrintHello& PrintHello::operator() ()
 	for (int i = 0; i < 8; i++) {
 		//string text = "Hello TBB " + to_string(i + 8) + "! ";
 		//std::cout << text;
-		std::cout << i << endl;
+		cout << i << endl;
 	};
 }
 
