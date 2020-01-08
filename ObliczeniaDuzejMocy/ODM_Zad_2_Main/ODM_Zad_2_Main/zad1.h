@@ -6,3 +6,6 @@ public:
 	PrintHello& operator()();
 
 };
+
+
+//float zad1_lambda();

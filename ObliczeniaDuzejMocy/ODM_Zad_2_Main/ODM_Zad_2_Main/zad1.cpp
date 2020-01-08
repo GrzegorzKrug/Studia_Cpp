@@ -4,8 +4,9 @@
 #include <string.h>
 
 using namespace std;
+using namespace tbb;
 
-PrintHello& PrintHello::operator() ()
+inline PrintHello& PrintHello::operator() ()
 {
 	for (int i = 0; i < 8; i++) {
 		string text = "Hello TBB " + to_string(i + 8) + "! ";
