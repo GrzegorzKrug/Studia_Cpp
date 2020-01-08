@@ -4,6 +4,7 @@
 #include <iostream>
 #include <tbb/tbb.h>
 #include <string.h>
+#include "zad1.h"
 
 using namespace std;
 using namespace tbb;
@@ -21,67 +22,38 @@ float run_10_times(float (*ptr)())
 	return sum_times / N;
 }
 
-float zad1_lambda()
+
+
+float zad2_parallel_foreach()
 {
+	//void (*fun_ptr)() = &function_hello;
+
 	tick_count time0 = tick_count::now();
-	tbb::parallel_invoke(
-		[]() {
-			for (int i = 0; i < 8; i++) {
-				string text = "Hello TBB " + to_string(i) + "! ";
-				std::cout << text;
-			};
-		},
-		[]() {
-			for (int i = 0; i < 8; i++) {
-				string text = "Hello TBB " + to_string(i + 8) + "! ";
-				std::cout << text;
-			};
-		}
-		);
+	/*tbb::parallel_invoke(
+		,
+		
+	);*/
 	tick_count time_end = tick_count::now();
 
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
-
-class PrintHello
-{
-public:
-	void operator() () const
-	{
-		for (int i = 0; i < 8; i++) {
-			string text = "Hello TBB " + to_string(i + 8) + "! ";
-			std::cout << text;
-		};
-	}
-};
-
-float zad1_klasa()
-{
-	PrintHello app1;
-	tick_count time0 = tick_count::now();
-	tbb::parallel_invoke(
-		app1,
-		app1
-	);
-	tick_count time_end = tick_count::now();
-
-	float duration = (time_end - time0).seconds();
-	return duration;
-}
-
-
-
 
 int main()
 {
+	PrintHello pr1;
+	pr1();
 	//float(*ptr_zad1_a)() = &zad1_lambda;
 	//float time1_a = run_10_times(ptr_zad1_a);
-	float time1_a = zad1_lambda();
+	//float time1_a = zad1_lambda();
 
 	//float(*ptr_zad1_b)() = &zad1_klasa;	
 	//float time1_a = run_10_times(ptr_zad1_b); // To nie dzia³a
-	float time1_b = zad1_klasa();
+	//float time1_b = zad1_klasa();
+
+	//float time1_c = zad1_pointer_to_function();
+
+
 
 }
 
