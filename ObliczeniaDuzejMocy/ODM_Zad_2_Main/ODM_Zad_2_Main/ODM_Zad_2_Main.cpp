@@ -136,10 +136,52 @@ static float zad3_parallel_for()
 	return duration;
 }
 
-void main()
+
+bool is_prime(int n) {
+	if (n < 2) {
+		return false;
+	}
+
+	int i = 2;
+	while (i * i <= n) {
+		if (n % i == 0) {
+			return false;
+		}
+		i += 1;
+	}
+	return true;
+}
+
+static float zad4_parallel_do()
 {
-	PrintHello pr1;
-	pr1();
+	list<pair<int, bool>> my_list;
+	//list<int, bool> good_vec;
+
+	for (int i = 0; i < 100; i++)
+		my_list.push_back(pair<int, bool>(rand(), false));
+
+	tick_count time0 = tick_count::now();
+	parallel_do(my_list,
+		[](list<pair<int, bool>> ::reference element) {
+			if (is_prime(element.first))
+			{
+				string text = "Prime:     " + to_string(element.first) + "\n";
+				cout << text;
+				element.second = true;
+			};
+		}
+	);
+
+	tick_count time_end = tick_count::now();
+
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
+int main()
+{
+	//PrintHello pr1;
+	//pr1();
 	//float(*ptr_zad1_a)() = &zad1_lambda;
 	//float time1_a = run_10_times(ptr_zad1_a);
 
@@ -150,11 +192,20 @@ void main()
 	float time1_c = zad1_pointer_to_function();
 	float time2 = zad2_parallel_foreach();
 	float time3 = zad3_parallel_for();
+	float time4 = zad4_parallel_do();
 
+	cout << "\n\n" << " - - - - " << "\n\n";
 
-	cout << "\n\n" << "...";
+	cout << "Time 1a: " << time1_a << endl;
+	cout << "Time 1b: " << time1_b << endl;
+	cout << "Time 1c: " << time1_c << endl;
+	cout << "Time 2:  " << time2 << endl;
+	cout << "Time 3:  " << time3 << endl;
+	cout << "Time 4:  " << time4 << endl;
 
 	cout << "\n\n" << "End...";
+
+	return 0;
 }
 
 
