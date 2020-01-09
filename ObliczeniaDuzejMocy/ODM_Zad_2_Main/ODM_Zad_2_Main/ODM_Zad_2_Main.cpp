@@ -191,29 +191,50 @@ static float zad4_parallel_do()
 
 static float zad5_parallel_reduce()
 {
-	vector<int> my_list;
-	int sum = 0;
+	vector<int> my_vector;
+	int min = 90000, max = 0, sum = 0;
 
 	for (int i = 0; i < 100; i++)
-		my_list.push_back(rand());
+		my_vector.push_back(rand());
 
 	tick_count time0 = tick_count::now();
-	typedef blocked_range<vector<int>::iterator> range_type;
+	//typedef blocked_range<vector<int>::iterator> range_type;
 
-	sum = parallel_reduce(range_type(my_list.begin(), my_list.end()), 0,
-		[](range_type const& r, int init) {
-			//return accumulate(r.begin(), r.end(), init);
-			string text = "reduce: " + to_string(init) + "\n";
-			cout << text;
-			/*for (int i = r.begin(); i < r.end(); ++i)
+	sum = tbb::parallel_reduce(
+		tbb::blocked_range<int>(0, (int)my_vector.size()),
+		0,
+		[&](tbb::blocked_range<int> r, int total)
+		{
+			for (int i = r.begin(); i < r.end(); i++)
 			{
-				running_total += values[i];
-			}*/
-			return init;
+				if (min > my_vector[i])
+					min = my_vector[i];
+
+				if (max < my_vector[i])
+					max = my_vector[i];
+				string text = "\nval: " + to_string(my_vector[i]);
+				cout << text;
+				total += my_vector[i];
+			}
+			return total;
 		},
-		plus<int>());
+		std::plus<int>());
 	tick_count time_end = tick_count::now();
+
 	cout << "\nSum: " << to_string(sum);
+	cout << "\nMin: " << to_string(min);
+	cout << "\nMax: " << to_string(max);
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
+static float zad6_parallel_for()
+{
+	tick_count time0 = tick_count::now();
+
+	tick_count time_end = tick_count::now();
+
+
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
