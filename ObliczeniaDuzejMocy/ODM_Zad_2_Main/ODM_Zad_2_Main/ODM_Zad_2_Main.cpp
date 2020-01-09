@@ -256,7 +256,8 @@ int main()
 	float time3 = zad3_parallel_for();
 	float time4 = zad4_parallel_do();
 	float time5 = zad5_parallel_reduce();
-
+	float time6 = zad6_parallel_for();
+	
 	cout << "\n\n" << " - - - - " << "\n\n";
 
 	cout << "Time 1a: " << time1_a << endl;
@@ -266,6 +267,7 @@ int main()
 	cout << "Time 3:  " << time3 << endl;
 	cout << "Time 4:  " << time4 << endl;
 	cout << "Time 5:  " << time5 << endl;
+	cout << "Time 6:  " << time6 << endl;
 
 	cout << "\n\n" << "End...";
 
