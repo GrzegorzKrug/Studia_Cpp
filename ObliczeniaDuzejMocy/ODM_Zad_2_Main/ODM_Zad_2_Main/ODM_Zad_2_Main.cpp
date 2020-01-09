@@ -191,16 +191,29 @@ static float zad4_parallel_do()
 
 static float zad5_parallel_reduce()
 {
-	list<pair<int, bool>> my_list;
-	//list<int, bool> good_vec;
+	vector<int> my_list;
+	int sum = 0;
 
 	for (int i = 0; i < 100; i++)
-		my_list.push_back(pair<int, bool>(rand(), false));
+		my_list.push_back(rand());
 
 	tick_count time0 = tick_count::now();
+	typedef blocked_range<vector<int>::iterator> range_type;
 
+	sum = parallel_reduce(range_type(my_list.begin(), my_list.end()), 0,
+		[](range_type const& r, int init) {
+			//return accumulate(r.begin(), r.end(), init);
+			string text = "reduce: " + to_string(init) + "\n";
+			cout << text;
+			/*for (int i = r.begin(); i < r.end(); ++i)
+			{
+				running_total += values[i];
+			}*/
+			return init;
+		},
+		plus<int>());
 	tick_count time_end = tick_count::now();
-
+	cout << "\nSum: " << to_string(sum);
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
