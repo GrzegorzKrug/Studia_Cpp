@@ -107,7 +107,7 @@ static float zad2_parallel_foreach()
 	tick_count time0 = tick_count::now();
 	parallel_for_each(my_vec.begin(), my_vec.end(),
 		[&](int& i) {
-			string text = "For each: " + to_string(i) + "\n";
+			string text = "TBB For each: " + to_string(i) + "\n";
 			std::cout << text;
 		});
 	tick_count time_end = tick_count::now();
@@ -124,6 +124,11 @@ static float zad3_parallel_for()
 		my_vec.push_back(rand());
 
 	tick_count time0 = tick_count::now();
+	parallel_for(2, 101, 2,
+		[&](int& i) {
+			string text = "TBB For: " + to_string(i) + "\n";
+			std::cout << text;
+		});
 
 	tick_count time_end = tick_count::now();
 
