@@ -2,6 +2,7 @@
 #include <tbb/tbb.h>
 #include <string.h>
 #include <random>
+#include "Matrix.h"
 
 //#include "zad1.cpp"
 
