@@ -107,7 +107,7 @@ static float zad2_parallel_foreach()
 	tick_count time0 = tick_count::now();
 	parallel_for_each(my_vec.begin(), my_vec.end(),
 		[&](int& i) {
-			string text = "TBB For each: " + to_string(i) + "\n";
+			string text = "TBB2 For each: " + to_string(i) + "\n";
 			std::cout << text;
 		});
 	tick_count time_end = tick_count::now();
@@ -126,7 +126,7 @@ static float zad3_parallel_for()
 	tick_count time0 = tick_count::now();
 	parallel_for(2, 101, 2,
 		[&](int& i) {
-			string text = "TBB For: " + to_string(i) + "\n";
+			string text = "TBB3 For: " + to_string(i) + "\n";
 			std::cout << text;
 		});
 	tick_count time_end = tick_count::now();
@@ -179,12 +179,10 @@ static float zad4_parallel_do()
 		}
 	}
 
-	//sort(good_vec.begin(), good_vec.end(), [](int a, int b) {
-	//	return a > b;
-	//	});
+	good_vec.sort();
 
 	for (int element : good_vec) {
-		cout << "TBB4 Sorted: " << to_string(element) << "\n";
+		cout << "TBB4 Sorted prime: " << to_string(element) << "\n";
 	}
 
 	float duration = (time_end - time0).seconds();
