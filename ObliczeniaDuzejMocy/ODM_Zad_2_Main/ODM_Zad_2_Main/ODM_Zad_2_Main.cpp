@@ -231,6 +231,12 @@ static float zad5_parallel_reduce()
 
 static float zad6_parallel_for()
 {
+	int size = 100;
+	Matrix* A = new Matrix(size, size);
+	Matrix* B = new Matrix(size, size);
+	A = new Matrix("matrices\\M" + std::to_string(size) + "_a");
+	B = new Matrix("matrices\\M" + std::to_string(size) + "_a");
+
 	tick_count time0 = tick_count::now();
 
 	tick_count time_end = tick_count::now();
@@ -257,7 +263,7 @@ int main()
 	float time4 = zad4_parallel_do();
 	float time5 = zad5_parallel_reduce();
 	float time6 = zad6_parallel_for();
-	
+
 	cout << "\n\n" << " - - - - " << "\n\n";
 
 	cout << "Time 1a: " << time1_a << endl;
