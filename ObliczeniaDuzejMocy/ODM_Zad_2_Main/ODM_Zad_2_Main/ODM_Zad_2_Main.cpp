@@ -129,7 +129,6 @@ static float zad3_parallel_for()
 			string text = "TBB For: " + to_string(i) + "\n";
 			std::cout << text;
 		});
-
 	tick_count time_end = tick_count::now();
 
 	float duration = (time_end - time0).seconds();
@@ -155,7 +154,7 @@ bool is_prime(int n) {
 static float zad4_parallel_do()
 {
 	list<pair<int, bool>> my_list;
-	//list<int, bool> good_vec;
+	list<int> good_vec;
 
 	for (int i = 0; i < 100; i++)
 		my_list.push_back(pair<int, bool>(rand(), false));
@@ -163,14 +162,44 @@ static float zad4_parallel_do()
 	tick_count time0 = tick_count::now();
 	parallel_do(my_list,
 		[](list<pair<int, bool>> ::reference element) {
-			if (is_prime(element.first))
-			{
-				string text = "Prime:     " + to_string(element.first) + "\n";
-				cout << text;
+			if (is_prime(element.first)) {
+				//string text = "Prime:     " + to_string(element.first) + "\n";
+				//cout << text;
 				element.second = true;
 			};
 		}
 	);
+	tick_count time_end = tick_count::now();
+
+	for (pair<int, bool>element : my_list) {
+		if (element.second == true) {
+			good_vec.push_back(element.first);
+			//string text = "Prime:     " + to_string(element.first) + "\n";
+			//cout << text;
+		}
+	}
+
+	//sort(good_vec.begin(), good_vec.end(), [](int a, int b) {
+	//	return a > b;
+	//	});
+
+	for (int element : good_vec) {
+		cout << "TBB4 Sorted: " << to_string(element) << "\n";
+	}
+
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
+static float zad5_parallel_reduce()
+{
+	list<pair<int, bool>> my_list;
+	//list<int, bool> good_vec;
+
+	for (int i = 0; i < 100; i++)
+		my_list.push_back(pair<int, bool>(rand(), false));
+
+	tick_count time0 = tick_count::now();
 
 	tick_count time_end = tick_count::now();
 
@@ -193,6 +222,7 @@ int main()
 	float time2 = zad2_parallel_foreach();
 	float time3 = zad3_parallel_for();
 	float time4 = zad4_parallel_do();
+	float time5 = zad5_parallel_reduce();
 
 	cout << "\n\n" << " - - - - " << "\n\n";
 
@@ -202,6 +232,7 @@ int main()
 	cout << "Time 2:  " << time2 << endl;
 	cout << "Time 3:  " << time3 << endl;
 	cout << "Time 4:  " << time4 << endl;
+	cout << "Time 5:  " << time5 << endl;
 
 	cout << "\n\n" << "End...";
 
