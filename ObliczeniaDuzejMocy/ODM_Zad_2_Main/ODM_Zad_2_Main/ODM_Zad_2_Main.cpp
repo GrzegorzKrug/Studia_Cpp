@@ -234,6 +234,8 @@ static float zad6_parallel_for()
 	int size = 100;
 	Matrix* A = new Matrix(size, size);
 	Matrix* B = new Matrix(size, size);
+	Matrix* Res = new Matrix(A->get_n(), B->get_m());
+
 	A = new Matrix("matrices\\M" + std::to_string(size) + "_a");
 	B = new Matrix("matrices\\M" + std::to_string(size) + "_a");
 
@@ -241,7 +243,7 @@ static float zad6_parallel_for()
 
 	tick_count time_end = tick_count::now();
 
-	A->writeToFile("test_matrix");
+	A->writeToFile("tbb_test_result");
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
