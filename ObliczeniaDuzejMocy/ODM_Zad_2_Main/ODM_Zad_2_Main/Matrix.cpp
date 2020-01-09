@@ -47,6 +47,27 @@ void Matrix::writeToFile()
 		file << std::endl;
 	}
 
-	// close the file
+	file.close();
+}
+
+void Matrix::writeToFile(std::string fileName)
+{
+	// open the file
+	std::ofstream file;
+	file.open("matrices\\" + fileName, std::ofstream::out);
+
+	// save the dimentions
+	file << m << " " << n << std::endl;
+
+	// save the content
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			file << content[i * m + j] << " ";
+		}
+		file << std::endl;
+	}
+
 	file.close();
 }

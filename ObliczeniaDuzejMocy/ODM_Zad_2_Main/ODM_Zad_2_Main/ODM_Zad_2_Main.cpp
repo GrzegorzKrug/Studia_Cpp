@@ -241,7 +241,7 @@ static float zad6_parallel_for()
 
 	tick_count time_end = tick_count::now();
 
-
+	A->writeToFile("test_matrix");
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
