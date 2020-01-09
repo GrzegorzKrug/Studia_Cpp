@@ -1,7 +1,7 @@
-
 #include <iostream>
 #include <tbb/tbb.h>
 #include <string.h>
+#include <random>
 
 //#include "zad1.cpp"
 
@@ -73,7 +73,7 @@ static float zad1_klasa()
 }
 
 
-void function_hello()
+static void function_hello()
 {
 	for (int i = 0; i < 8; i++) {
 		string text = "Hello TBB " + to_string(i + 8) + "! ";
@@ -82,7 +82,7 @@ void function_hello()
 }
 
 
-float zad1_pointer_to_function()
+static float zad1_pointer_to_function()
 {
 	void (*fun_ptr)() = &function_hello;
 
@@ -98,21 +98,25 @@ float zad1_pointer_to_function()
 }
 
 
-//float zad2_parallel_foreach()
-//{
-//	//void (*fun_ptr)() = &function_hello;
-//	tick_count time0 = tick_count::now();
-//	/*tbb::parallel_invoke(
-//		,
-//		
-//	);*/
-//	tick_count time_end = tick_count::now();
-//
-//	float duration = (time_end - time0).seconds();
-//	return duration;
-//}
+static float zad2_parallel_foreach()
+{
+	vector<int> my_vec;
+	for (int i = 0; i < 100; i++)
+		my_vec.push_back(rand());
 
-int main()
+	tick_count time0 = tick_count::now();
+	parallel_for_each(my_vec.begin(), my_vec.end(),
+		[&](int& i) {
+			std::string print = std::to_string(i) + " ";
+			std::cout << print;
+		});
+	tick_count time_end = tick_count::now();
+
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
+void main()
 {
 	PrintHello pr1;
 	pr1();
@@ -125,8 +129,12 @@ int main()
 
 	float time1_c = zad1_pointer_to_function();
 
+	float time2 = zad2_parallel_foreach();
 
 
+	cout << "\n\n" << "...";
+
+	cout << "\n\n" << "End...";
 }
 
 
