@@ -107,9 +107,24 @@ static float zad2_parallel_foreach()
 	tick_count time0 = tick_count::now();
 	parallel_for_each(my_vec.begin(), my_vec.end(),
 		[&](int& i) {
-			std::string print = std::to_string(i) + " ";
-			std::cout << print;
+			string text = "For each: " + to_string(i) + "\n";
+			std::cout << text;
 		});
+	tick_count time_end = tick_count::now();
+
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
+
+static float zad3_parallel_for()
+{
+	vector<int> my_vec;
+	for (int i = 0; i < 100; i++)
+		my_vec.push_back(rand());
+
+	tick_count time0 = tick_count::now();
+
 	tick_count time_end = tick_count::now();
 
 	float duration = (time_end - time0).seconds();
@@ -128,8 +143,8 @@ void main()
 	float time1_b = zad1_klasa();
 
 	float time1_c = zad1_pointer_to_function();
-
 	float time2 = zad2_parallel_foreach();
+	float time3 = zad3_parallel_for();
 
 
 	cout << "\n\n" << "...";
