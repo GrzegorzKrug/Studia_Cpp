@@ -229,9 +229,34 @@ static float zad5_parallel_reduce()
 	return duration;
 }
 
+void multiply_for1(const Matrix& A, const Matrix& B, Matrix& Result, int threads_num)
+{
+	int row_A = 0,
+		col_B = 0,
+		element = 0,
+		res = 0;
+
+
+	for (row_A = 0; row_A < A.get_n(); row_A++)
+	{
+		for (col_B = 0; col_B < B.get_m(); col_B++)
+		{
+			res = 0;
+			for (element = 0; element < A.get_m(); element++)
+			{
+				res += A.get_val(row_A, element) * B.get_val(element, col_B);
+			}
+			Result.set_val(row_A,
+				col_B,
+				res
+			);
+		}
+	}
+}
+
 static float zad6_parallel_for()
 {
-	int size = 100;
+	int size = 10;
 	Matrix* A = new Matrix(size, size);
 	Matrix* B = new Matrix(size, size);
 	Matrix* Res = new Matrix(A->get_n(), B->get_m());
@@ -240,10 +265,26 @@ static float zad6_parallel_for()
 	B = new Matrix("matrices\\M" + std::to_string(size) + "_a");
 
 	tick_count time0 = tick_count::now();
-
+	parallel_for(0, A->get_m(), 1,
+		[&](int& row_A) {
+			//string text = "\nrow: " + to_string(row_A);
+			//cout << text;
+			for (int col_B = 0; col_B < B->get_m(); col_B++)
+			{
+				int res = 0;
+				for (int element = 0; element < A->get_m(); element++)
+				{
+					res += A->get_val(row_A, element) * B->get_val(element, col_B);
+				}
+				Res->set_val(row_A,
+					col_B,
+					res
+				);
+			}
+		});
 	tick_count time_end = tick_count::now();
 
-	A->writeToFile("tbb_test_result");
+	Res->writeToFile("tbb_test_result");
 	float duration = (time_end - time0).seconds();
 	return duration;
 }
