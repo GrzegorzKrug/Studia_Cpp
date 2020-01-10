@@ -154,6 +154,9 @@
   <ItemGroup>
     <ClCompile Include="Zad2_cpp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ABCD.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
