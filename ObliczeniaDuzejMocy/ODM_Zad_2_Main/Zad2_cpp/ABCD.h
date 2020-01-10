@@ -2,67 +2,62 @@
 #include <iostream>
 #include <cmath>
 
-class A
-{
+class A {
 public:
 	int ax;
 protected:
 	int ay;
 
 public:
-	int Add() { return ax + ay; }
-	int Multiply() { return ax * ay; }
+	int Add() {
+		return ax + ay;
+	}
+	int Multiply() {
+		return ax * ay;
+	}
 
-public:
-	A()
-	{
+	A() {
 		ax = 0;
 		ay = 0;
-
-		std::cout << "A created" << std::endl;
+		std::cout << "Created A empty" << std::endl;
 	}
 
-	A(int x, int y)
-	{
+	A(int x, int y) {
 		ax = x;
 		ay = y;
-
-		std::cout << "A created" << std::endl;
+		std::cout << "Created A" << std::endl;
 	}
 
-	virtual ~A()
-	{
-		std::cout << "A deleted" << std::endl;
+	virtual ~A() {
+		std::cout << "A deleted\n";
 	}
 
-	A(const A& a)
-	{
+	A(const A& a) {
 		ax = a.ax;
 		ay = a.ay;
-
-		std::cout << "A copied" << std::endl;
 	}
 };
 
-
-class B : public A
-{
+class B : public A {
 public:
 	int bx;
 protected:
 	int by;
 
 public:
-	int Substract() { return bx - by; }
-	int Divide() { return bx / by; }
+	int Substract() {
+		return bx - by;
+	}
+	int Divide() {
+		return bx / by;
+	}
 
-public:
 	B()
 	{
 		bx = 0;
 		by = 0;
 
-		std::cout << "B created" << std::endl;
+		std::cout << "Created B empty" << std::endl;
 	}
 
 	B(int ax, int ay, int x, int y) : A(ax, ay)
@@ -85,27 +80,27 @@ public:
 
 		std::cout << "B copied" << std::endl;
 	}
+
 };
 
-
-class C : protected B
-{
+class C : protected B {
 public:
 	int cx;
 protected:
 	int cy;
 
 public:
-	int Mod() { return cx % cy; }
-	int Square() { return cx * cx; }
+	bool IsBigger() {
+		return cx > cy;
+	}
+	bool IsSmaller() {
+		return cx < cy;
+	}
 
-public:
-	C()
-	{
+	C() {
 		cx = 0;
 		cy = 0;
-
-		std::cout << "C created" << std::endl;
+		std::cout << "Created C empty" << std::endl;
 	}
 
 	C(int ax, int ay, int bx, int by, int x, int y) : B(ax, ay, bx, by)
@@ -116,41 +111,35 @@ public:
 		std::cout << "C created" << std::endl;
 	}
 
-	virtual ~C()
-	{
-		std::cout << "C deleted" << std::endl;
+	virtual ~C() {
+
 	}
 
-	C(const C& c) : B(c)
-	{
+	C(const C& c) : B(c) {
 		cx = c.cx;
 		cy = c.cy;
-
-		std::cout << "C copied" << std::endl;
 	}
+
 };
 
-
-class D : private C
-{
+class D : private C {
 public:
 	int dx;
-private:
+protected:
 	int dy;
-	int* tab;
 
 public:
-	int Avg() { return (ax + ay + bx + by + cx + cy) / 6; }
-	int Sqrt() { return (int)sqrt(dx); }
+	int Sum() {
+		return ax + ay + bx + by + cx + cy + dx + dy;
+	}
+	int MultiplyAll() {
+		return ax * ay * bx * by * cx * cy * dx * dy;
+	}
 
-public:
-	D()
-	{
+	D() {
 		dx = 0;
 		dy = 0;
-		tab = new int[10];
-
-		std::cout << "D created" << std::endl;
+		std::cout << "Created D empty" << std::endl;
 	}
 
 	D(int ax, int ay, int bx, int by, int cx, int cy, int x, int y)
@@ -158,8 +147,6 @@ public:
 	{
 		dx = x;
 		dy = y;
-		tab = new int[10];
-
 		std::cout << "D created" << std::endl;
 	}
 
@@ -171,10 +158,8 @@ public:
 	D(const D& d) : C(d)
 	{
 		dx = d.dx;
-		dy = d.dy;
-		delete tab;
+		dy = d.dy;		
 
 		std::cout << "D copied" << std::endl;
 	}
 };
-
