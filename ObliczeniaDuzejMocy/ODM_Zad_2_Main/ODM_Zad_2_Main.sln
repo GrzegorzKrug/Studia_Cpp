@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ODM_Zad_2_Main", "ODM_Zad_2_Main\ODM_Zad_2_Main.vcxproj", "{61437D30-540F-4902-A4C4-A061F0838CCA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ODM_Zad_2_TBB", "ODM_Zad_2_Main\ODM_Zad_2_Main.vcxproj", "{61437D30-540F-4902-A4C4-A061F0838CCA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ODM_Zad_2_CPP", "Zad2_cpp\Zad2_cpp.vcxproj", "{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{61437D30-540F-4902-A4C4-A061F0838CCA}.Release|x64.Build.0 = Release|x64
 		{61437D30-540F-4902-A4C4-A061F0838CCA}.Release|x86.ActiveCfg = Release|Win32
 		{61437D30-540F-4902-A4C4-A061F0838CCA}.Release|x86.Build.0 = Release|Win32
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Debug|x64.ActiveCfg = Debug|x64
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Debug|x64.Build.0 = Debug|x64
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Debug|x86.ActiveCfg = Debug|Win32
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Debug|x86.Build.0 = Debug|Win32
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Release|x64.ActiveCfg = Release|x64
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Release|x64.Build.0 = Release|x64
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Release|x86.ActiveCfg = Release|Win32
+		{A48FAF24-04EA-4D1E-A493-99D4EF7E2117}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
