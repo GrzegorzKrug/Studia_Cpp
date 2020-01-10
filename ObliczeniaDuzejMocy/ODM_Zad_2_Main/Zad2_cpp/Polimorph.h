@@ -13,13 +13,12 @@ public:
 	}
 
 	virtual void VirtualFunc() = 0;
-
 	virtual void Master() = 0;
-
+	virtual void Hello() = 0;
 };
 
 
-class Higher : Abstract
+class Higher : public Abstract
 {
 
 public:
@@ -45,7 +44,7 @@ public:
 
 	void Master() final override
 	{
-		std::cout << "Final function in middle class" << std::endl;
+		std::cout << "Final function in Higher class" << std::endl;
 	}
 };
 
@@ -63,9 +62,9 @@ public:
 		std::cout << "Final deleted" << std::endl;
 	}
 
-	void Hello() override
+	void Hello() final override
 	{
-		std::cout << "Hello Final" << std::endl;
+		std::cout << "Hello from Best Final class" << std::endl;
 	}
 
 };

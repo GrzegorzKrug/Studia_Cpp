@@ -52,6 +52,40 @@ void zad1_diamond()
 
 }
 
+void zad2() 
+{
+	std::cout << "new Middle" << std::endl;
+
+	Higher* my_higher = new Higher();
+	std::cout << "\n Calling my_higher method Virtual: \n";
+	my_higher->VirtualFunc();	
+	std::cout << "\n Calling my_higher method Hello: \n";
+	my_higher->Hello();	
+	std::cout << "\n Calling my_higher method Master: \n";
+	my_higher->Master();
+
+	
+	Best* my_best = new Best();	
+	std::cout << "\n Calling my_best method Virtual: \n";
+	my_best->VirtualFunc();
+	std::cout << "\n Calling my_best method Hello: \n";
+	my_best->Hello();	
+	std::cout << "\n Calling my_best method Master: \n";
+	my_best->Master();
+
+	
+	Abstract* abstract = new Best();
+	std::cout << "\n Calling abstract method Hello: \n";
+	abstract->Hello();
+	
+	std::cout << "\n Deleting my_higher: \n";
+	delete my_higher;	
+	std::cout << "\n Deleting my_best: \n";
+	delete my_best;
+	std::cout << "\n Deleting abstract: \n";
+	delete abstract;
+}
+
 int main()
 {
 	std::cout << "\n\n = = = = Zad1 \n";
@@ -59,6 +93,9 @@ int main()
 
 	std::cout << "\n\n = = = = Zad1a \n";
 	zad1_diamond();
+
+	std::cout << "\n\n = = = = Zad2 \n";
+	zad2();
 
 	return 0;
 }
