@@ -3,8 +3,9 @@
 #include <string.h>
 #include <random>
 #include "Matrix.h"
-
-//#include "zad1.cpp"
+#include <fstream>
+#include <locale>
+//#include "zad1.pp"
 
 using namespace std;
 using namespace tbb;
@@ -213,8 +214,8 @@ static float zad5_parallel_reduce()
 
 				if (max < my_vector[i])
 					max = my_vector[i];
-				string text = "\nval: " + to_string(my_vector[i]);
-				cout << text;
+				//string text = "\nval: " + to_string(my_vector[i]);
+				//cout << text;
 				total += my_vector[i];
 			}
 			return total;
@@ -256,7 +257,7 @@ void multiply_for1(const Matrix& A, const Matrix& B, Matrix& Result, int threads
 
 static float zad6_parallel_for()
 {
-	int size = 10;
+	int size = 100;
 	Matrix* A = new Matrix(size, size);
 	Matrix* B = new Matrix(size, size);
 	Matrix* Res = new Matrix(A->get_n(), B->get_m());
@@ -289,6 +290,83 @@ static float zad6_parallel_for()
 	return duration;
 }
 
+static float zad7_parallel_pipeline()
+{
+	//setlocale(LC_ALL, "polish.UTF-8");
+	setlocale(LC_ALL, "polish");
+	//locale::global(std::locale("polish"));
+	string line;
+
+	// Sequence 
+	std::ifstream input_file;
+	input_file.open("texts\\input.txt");
+
+	std::ofstream sequence_OutputFile;
+	sequence_OutputFile.open("texts\\SequenceResult.txt");
+
+
+	while (getline(input_file, line))
+	{
+		size_t n = line.size() - 1;
+		for (size_t i = 0; i < line.size() / 2; i++, n--)
+			std::swap(line[i], line[n]);
+
+		sequence_OutputFile << line << std::endl;
+	}
+
+	input_file.close();
+	sequence_OutputFile.close();
+
+	// TBB Parallel	
+	input_file.open("texts\\input.txt");
+
+	std::ofstream tbb_OutputFile;
+	tbb_OutputFile.open("texts\\Tbb.txt");
+
+
+	tick_count time0 = tick_count::now();
+
+	parallel_pipeline(
+		8,
+		tbb::make_filter<void, std::string>(
+			tbb::filter::serial_in_order,
+			[&](tbb::flow_control& fc) -> std::string {
+				if (!input_file)
+					fc.stop();
+
+				std::string input;
+				std::getline(input_file, input);
+
+				return input;
+			}
+			) &
+		tbb::make_filter<std::string, std::string>(
+			tbb::filter::parallel,
+			[](std::string input) -> std::string {
+				size_t n = input.size() - 1;
+				for (size_t i = 0; i < input.size() / 2; i++, n--)
+				{
+					std::swap(input[i], input[n]);
+				}
+				return input;
+			}
+			) &
+				tbb::make_filter<std::string, void>(
+					tbb::filter::serial_in_order,
+					[&](std::string input) -> void {
+						tbb_OutputFile << input << std::endl;
+					}
+					)
+				);
+
+	tick_count time_end = tick_count::now();
+	input_file.close();
+	tbb_OutputFile.close();
+
+	float duration = (time_end - time0).seconds();
+	return duration;
+}
+
 int main()
 {
 	//PrintHello pr1;
@@ -306,17 +384,18 @@ int main()
 	float time4 = zad4_parallel_do();
 	float time5 = zad5_parallel_reduce();
 	float time6 = zad6_parallel_for();
-
+	float time7 = zad7_parallel_pipeline();
 	cout << "\n\n" << " - - - - " << "\n\n";
 
 	cout << "Time 1a: " << time1_a << endl;
 	cout << "Time 1b: " << time1_b << endl;
 	cout << "Time 1c: " << time1_c << endl;
-	cout << "Time 2:  " << time2 << endl;
-	cout << "Time 3:  " << time3 << endl;
-	cout << "Time 4:  " << time4 << endl;
-	cout << "Time 5:  " << time5 << endl;
-	cout << "Time 6:  " << time6 << endl;
+	cout << "Time 2 : " << time2 << endl;
+	cout << "Time 3 : " << time3 << endl;
+	cout << "Time 4 : " << time4 << endl;
+	cout << "Time 5 : " << time5 << endl;
+	cout << "Time 6 : " << time6 << endl;
+	cout << "Time 7 : " << time7 << endl;
 
 	cout << "\n\n" << "End...";
 
