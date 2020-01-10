@@ -1,6 +1,8 @@
 #include <iostream>
 #include "ABCD.h"
 #include "Base.h"
+#include "Polimorph.h"
+
 
 void zad1()
 {
@@ -40,15 +42,13 @@ void zad1()
 void zad1_diamond()
 {
 	//SuperDiamond diamond;
-	Base* base = new SuperDiamond();
+	Base* my_diamond = new SuperDiamond();
 
-	//base->PrintName();
+	my_diamond->PrintName();
 
-	//std::cout << std::endl << "delete Base (new Diamond):" << std::endl;
-	//
-	//delete base;
+	//std::cout << std::endl << "delete my_diamond:" << std::endl;
+	delete my_diamond;
 
-	//std::cout << std::endl << "delete stack Diamond:" << std::endl;
 
 }
 
