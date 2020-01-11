@@ -117,19 +117,18 @@ void zad4_templates() {
 	float numArr2[] = { 10, 20, 30, 40, 50 };
 	int target = 20;
 	int result = search(numArr, target);
-	std::cout << "Result1 index: " << result << std::endl;
+	std::cout << "Result Int index: " << result << std::endl;
 
 	result = search(numArr2, (float)30);
-	std::cout << "Result2 index: " << result << std::endl;
+	std::cout << "Result Float index: " << result << std::endl;
 
 	char znaki[] = "This is my sample text";
-	result = search(znaki, 'e');
-	//std::cout << znaki << std::endl;
-	std::cout << "Result3 index: " << result << std::endl;
+	result = search(znaki, 'e');	
+	std::cout << "Result Char index: " << result << std::endl;
 
 	std::string text = "This is my sample text";
 	result = search(text, 'e');
-	std::cout << "Result4 index: " << result << std::endl;
+	std::cout << "Result Strgin index: " << result << std::endl;
 }
 
 int main()
