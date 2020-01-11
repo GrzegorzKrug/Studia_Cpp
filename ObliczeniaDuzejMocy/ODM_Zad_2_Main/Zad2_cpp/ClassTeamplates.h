@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include <random>
 
 template <class T, int ROWS, int COLS>
 class SuperClass {
@@ -10,7 +11,7 @@ public:
 		std::cout << "Creating matrix with zeros" << std::endl;
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				content[i][j] = 0;
+				content[i][j] = (T)(rand() % 20);
 			}
 		}
 	}
@@ -88,10 +89,26 @@ public:
 		return *result;
 	}
 
-	//SuperClass& operator=(const SuperClass& other)
-	//{
-	//	//std::cout << "\n Overloading '=' \n";
-	//	this->content = other.content;
-	//	return =this;
-	//}
+	SuperClass& operator+(const SuperClass& other)
+	{
+		SuperClass* result = new SuperClass();
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				T temp = (T)0;
+				temp += this->getElement(row, col) + other.getElement(row, col);
+				result->setElement(row, col, temp);
+
+			}
+		}
+
+		return *result;
+	}
+
+	//	SuperClass& operator=(const SuperClass& other)
+	//	{
+	//		//std::cout << "\n Overloading '=' \n";
+	//		delete this->content;
+	//		this->content = other.content;
+	//		return this;
+	//	}
 };

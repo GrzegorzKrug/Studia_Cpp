@@ -137,12 +137,16 @@ void zad5_class_template() {
 	SuperClass<int, 10, 10> * matrix2 = new SuperClass<int, 10, 10>(3);
 	SuperClass<int, 10, 10> * matrix3 = new SuperClass<int, 10, 10>("EYE");
 
+	matrix1->printMatrix();
 	matrix2->printMatrix();
 	matrix3->printMatrix();
 	SuperClass<int, 10, 10> * result = new SuperClass<int, 10, 10>();;
 
 	//result = matrix2;
-	*result = *matrix2 * *matrix3;
+	*result = *matrix1 * *matrix1;
+	result->printMatrix();
+
+	*result = *matrix2 + *matrix3;
 	result->printMatrix();
 }
 
