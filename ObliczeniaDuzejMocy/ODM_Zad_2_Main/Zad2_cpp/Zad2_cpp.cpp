@@ -4,6 +4,7 @@
 #include "Polimorph.h"
 #include "NewMathClass.h"
 #include "FuncTemplates.h"
+#include "ClassTeamplates.h"
 
 
 void zad1()
@@ -123,7 +124,7 @@ void zad4_templates() {
 	std::cout << "Result Float index: " << result << std::endl;
 
 	char znaki[] = "This is my sample text";
-	result = search(znaki, 'e');	
+	result = search(znaki, 'e');
 	std::cout << "Result Char index: " << result << std::endl;
 
 	std::string text = "This is my sample text";
@@ -132,7 +133,17 @@ void zad4_templates() {
 }
 
 void zad5_class_template() {
+	SuperClass<int, 10, 10> * matrix1 = new SuperClass<int, 10, 10>();
+	SuperClass<int, 10, 10> * matrix2 = new SuperClass<int, 10, 10>(3);
+	SuperClass<int, 10, 10> * matrix3 = new SuperClass<int, 10, 10>("EYE");
 
+	matrix2->printMatrix();
+	matrix3->printMatrix();
+	SuperClass<int, 10, 10> * result = new SuperClass<int, 10, 10>();;
+
+	//result = matrix2;
+	*result = *matrix2 * *matrix3;
+	result->printMatrix();
 }
 
 int main()
