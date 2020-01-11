@@ -313,7 +313,6 @@ static float zad7_parallel_pipeline()
 
 		sequence_OutputFile << line << std::endl;
 	}
-
 	input_file.close();
 	sequence_OutputFile.close();
 
