@@ -3,6 +3,7 @@
 #include "Base.h"
 #include "Polimorph.h"
 #include "NewMathClass.h"
+#include "FuncTemplates.h"
 
 
 void zad1()
@@ -47,9 +48,7 @@ void zad1_diamond()
 
 	my_diamond->PrintName();
 
-	//std::cout << std::endl << "delete my_diamond:" << std::endl;
 	delete my_diamond;
-
 
 }
 
@@ -110,16 +109,35 @@ void zad3_overload() {
 
 	std::cout << "a1(1)    \t" << a1(1) << std::endl;
 	std::cout << "a1(2,3)  \t" << a1(2, 3) << std::endl;
-
 }
 
+
+void zad4_templates() {
+	int numArr[] = { 10, 20, 30, 40, 50 };
+	float numArr2[] = { 10, 20, 30, 40, 50 };
+	int target = 20;
+	int result = search(numArr, target);
+	std::cout << "Result1 index: " << result << std::endl;
+
+	result = search(numArr2, (float)30);
+	std::cout << "Result2 index: " << result << std::endl;
+
+	char znaki[] = "This is my sample text";
+	result = search(znaki, 'e');
+	//std::cout << znaki << std::endl;
+	std::cout << "Result3 index: " << result << std::endl;
+
+	std::string text = "This is my sample text";
+	result = search(text, 'e');
+	std::cout << "Result4 index: " << result << std::endl;
+}
 
 int main()
 {
 	std::cout << "\n\n = = = = Zad1 \n";
 	zad1();
 
-	std::cout << "\n\n = = = = Zad1a \n";
+	std::cout << "\n\n = = = = Zad1 a \n";
 	zad1_diamond();
 
 	std::cout << "\n\n = = = = Zad2 \n";
@@ -128,6 +146,8 @@ int main()
 	std::cout << "\n\n = = = = Zad3 \n";
 	zad3_overload();
 
+	std::cout << "\n\n = = = = Zad4 \n";
+	zad4_templates();
 
 	return 0;
 }
