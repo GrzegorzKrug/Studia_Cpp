@@ -131,6 +131,10 @@ void zad4_templates() {
 	std::cout << "Result Strgin index: " << result << std::endl;
 }
 
+void zad5_class_template() {
+
+}
+
 int main()
 {
 	std::cout << "\n\n = = = = Zad1 \n";
@@ -147,6 +151,9 @@ int main()
 
 	std::cout << "\n\n = = = = Zad4 \n";
 	zad4_templates();
+
+	std::cout << "\n\n = = = = Zad5 \n";
+	zad5_class_template();
 
 	return 0;
 }
