@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <cmath>
+#include <string>
+#include <vector>
+#include <utility> 
 
 class A {
 public:
@@ -14,6 +17,11 @@ public:
 	}
 	int Multiply() {
 		return ax * ay;
+	}
+
+	std::string ValuesToText() {
+		std::string text = "(x=" + std::to_string(ax) + ", y=" + std::to_string(ay) + ")";
+		return text;
 	}
 
 	A() {
@@ -36,6 +44,20 @@ public:
 		ax = a.ax;
 		ay = a.ay;
 	}
+
+	A& operator=(const A& other);
+	A& operator+=(const A& other);
+	A& operator++();
+	A& operator++(int);
+	A& operator+(const A& other);
+	A& operator-(const A& other);
+	std::pair<bool, bool> operator>(const A& other);
+	std::pair<bool, bool> operator<(const A& other);
+	std::pair<bool, bool> operator==(const A& other);
+	std::pair<bool, bool> operator!=(const A& other);
+	int& operator[](size_t index);	
+	int operator()(int i);
+	int operator()(int i, int j);
 };
 
 class B : public A {
@@ -158,7 +180,7 @@ public:
 	D(const D& d) : C(d)
 	{
 		dx = d.dx;
-		dy = d.dy;		
+		dy = d.dy;
 
 		std::cout << "D copied" << std::endl;
 	}

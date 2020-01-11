@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="ABCD.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="NewMathClass.h" />
     <ClInclude Include="Polimorph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

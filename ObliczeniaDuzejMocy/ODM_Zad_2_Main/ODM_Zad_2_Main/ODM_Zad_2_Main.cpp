@@ -4,7 +4,7 @@
 #include <random>
 #include "Matrix.h"
 #include <fstream>
-#include <locale>
+//#include <locale>
 //#include "zad1.pp"
 
 using namespace std;

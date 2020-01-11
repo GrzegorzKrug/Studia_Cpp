@@ -2,6 +2,7 @@
 #include "ABCD.h"
 #include "Base.h"
 #include "Polimorph.h"
+#include "NewMathClass.h"
 
 
 void zad1()
@@ -17,7 +18,7 @@ void zad1()
 
 	std::cout << "\nnew D: " << std::endl;
 	D* d = new D(1, 2, 3, 4, 5, 6, 7, 8);
-	
+
 	std::cout << "\ncopy A: " << std::endl;
 	A a2(*a);
 
@@ -52,39 +53,66 @@ void zad1_diamond()
 
 }
 
-void zad2() 
+void zad2()
 {
 	std::cout << "new Middle" << std::endl;
 
 	Higher* my_higher = new Higher();
 	std::cout << "\n Calling my_higher method Virtual: \n";
-	my_higher->VirtualFunc();	
+	my_higher->VirtualFunc();
 	std::cout << "\n Calling my_higher method Hello: \n";
-	my_higher->Hello();	
+	my_higher->Hello();
 	std::cout << "\n Calling my_higher method Master: \n";
 	my_higher->Master();
 
-	
-	Best* my_best = new Best();	
+
+	Best* my_best = new Best();
 	std::cout << "\n Calling my_best method Virtual: \n";
 	my_best->VirtualFunc();
 	std::cout << "\n Calling my_best method Hello: \n";
-	my_best->Hello();	
+	my_best->Hello();
 	std::cout << "\n Calling my_best method Master: \n";
 	my_best->Master();
 
-	
+
 	Abstract* abstract = new Best();
 	std::cout << "\n Calling abstract method Hello: \n";
 	abstract->Hello();
-	
+
 	std::cout << "\n Deleting my_higher: \n";
-	delete my_higher;	
+	delete my_higher;
 	std::cout << "\n Deleting my_best: \n";
 	delete my_best;
 	std::cout << "\n Deleting abstract: \n";
 	delete abstract;
 }
+
+
+void zad3_overload() {
+	A a1(5, 3);
+	A a2(4, 21);
+	//A result = a1 + a2;
+	std::cout << "A1    \t" << a1.ValuesToText() << std::endl;
+	std::cout << "A2    \t" << a2.ValuesToText() << std::endl;
+	std::cout << "a1+a2 \t" << (a1 + a2).ValuesToText() << std::endl;
+	std::cout << "++a1  \t" << (++a1).ValuesToText() << std::endl;
+	a1 = A(5, 3);
+	std::cout << "a1++  \t" << (a1++).ValuesToText() << std::endl;
+	a1 = A(5, 3);
+	std::cout << "a1-a2 \t" << (a1 - a2).ValuesToText() << std::endl;
+
+	std::cout << "a1<a2 \t(" << std::to_string((a1 < a2).first) << ", " << std::to_string((a1 < a2).second) << ")" << std::endl;
+	std::cout << "a1>a2 \t(" << std::to_string((a1 > a2).first) << ", " << std::to_string((a1 > a2).second) << ")" << std::endl;
+	std::cout << "a1==a2 \t(" << std::to_string((a1 == a2).first) << ", " << std::to_string((a1 == a2).second) << ")" << std::endl;
+	std::cout << "a1!=a2 \t(" << std::to_string((a1 != a2).first) << ", " << std::to_string((a1 != a2).second) << ")" << std::endl;
+
+	std::cout << "a1[0]  \t" << a1[0] << std::endl;
+
+	std::cout << "a1(1)    \t" << a1(1) << std::endl;
+	std::cout << "a1(2,3)  \t" << a1(2, 3) << std::endl;
+
+}
+
 
 int main()
 {
@@ -97,5 +125,10 @@ int main()
 	std::cout << "\n\n = = = = Zad2 \n";
 	zad2();
 
+	std::cout << "\n\n = = = = Zad3 \n";
+	zad3_overload();
+
+
 	return 0;
 }
+
