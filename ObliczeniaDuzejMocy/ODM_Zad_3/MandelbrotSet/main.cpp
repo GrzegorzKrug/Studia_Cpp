@@ -191,14 +191,14 @@ Image* mergeImages(const std::string resultFolder, const Image& img1, const Imag
 			green = img2.getPixel(x, y).getG();
 			blue = (red + green) / 2;
 
-			/*if (red % 2 == 0) {
+			if (red > 190) {
 				green = 0;
 			}
 			else {
 				red = 0;
-			}*/
+			}
 
-			Pixel p(0, 0, blue);
+			Pixel p(red, green, 0);
 			result->setPixel(x, y, p);
 		}
 	}
