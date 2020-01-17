@@ -7,13 +7,13 @@ Image::Image(std::string fileName, int width, int height, int maxColor)
     file = openFile(fileName);
 
     // create file header string
-    this->fileHeader = "P3 "        // 1, 2
-        + std::to_string(width)     // 3
-        + " "                       // 4
-        + std::to_string(height)    // 5
-        + " "                       // 6
-        + std::to_string(maxval)    // 7
-        + '\n';                     // 8
+    this->fileHeader = "P3 "       
+        + std::to_string(width)    
+        + " "                      
+        + std::to_string(height)   
+        + " "                      
+        + std::to_string(maxval)   
+        + '\n';                    
 
     // save the header to the file
     file << fileHeader;
