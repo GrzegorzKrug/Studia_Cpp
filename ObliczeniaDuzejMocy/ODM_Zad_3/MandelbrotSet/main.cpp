@@ -12,7 +12,7 @@ int findValue(const double cr, const double ci, const int maxN);
 void fractal(Image& image, const int maxN, const double minRe, const double maxRe,
 	const double minIm, const double maxIm, const Pixel palette);
 
-Image* mergeImages(const std::string resultFolder, const Image& img1, const Image& img2, const int index);
+Image* combine(const std::string resultFolder, const Image& img1, const Image& img2, const int index);
 
 
 int main()
@@ -27,7 +27,7 @@ int main()
 	input.push_back(InputData(-1, 1, -2, 3));
 	input.push_back(InputData(-1.9, -1.2, 0.23, 0.75));
 	input.push_back(InputData(-0.7463, -0.7513, 0.1102, 0.1152));
-
+	std::cout << input.size();
 	int countSource = 0;
 	int countResults = 0;
 
@@ -50,7 +50,7 @@ int main()
 
 	tbb::flow::function_node<InputData, Image*> fractalRed(
 		graph,
-		tbb::flow::unlimited,
+		0,
 		[&](InputData in) -> Image *
 		{
 			Pixel palette(100, 0, 0);
@@ -61,10 +61,9 @@ int main()
 			return result;
 		}
 	);
-
 	tbb::flow::function_node<InputData, Image*> fractalGreen(
 		graph,
-		tbb::flow::unlimited,
+		0,
 		[&](InputData in) -> Image *
 		{
 			Pixel palette(0, 100, 0);
@@ -76,16 +75,16 @@ int main()
 		}
 	);
 
-	tbb::flow::join_node<tbb::flow::tuple<Image*, Image*>> join(graph);
+	tbb::flow::join_node<tbb::flow::tuple<Image*, Image*>, tbb::flow::queueing> join(graph);
 
-	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, std::tuple<Image*, Image*, Image*>> merge(
+	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, std::tuple<Image*, Image*, Image*>> combineNode(
 		graph,
-		tbb::flow::unlimited,
+		0,
 		[&](tbb::flow::tuple<Image*, Image*> input) -> std::tuple<Image*, Image*, Image*>
 		{
 			Image* img1 = tbb::flow::get<0>(input);
 			Image* img2 = tbb::flow::get<1>(input);
-			Image* result = mergeImages(resultFolder, *img1, *img2, ++countResults);
+			Image* result = combine(resultFolder, *img1, *img2, ++countResults);
 
 			return std::make_tuple(img1, img2, result);
 		}
@@ -93,7 +92,7 @@ int main()
 
 	tbb::flow::function_node<std::tuple<Image*, Image*, Image*>> save(
 		graph,
-		tbb::flow::unlimited,
+		0,
 		[&](std::tuple<Image*, Image*, Image*> images) -> void
 		{
 			Image* img1 = std::get<0>(images);
@@ -112,8 +111,8 @@ int main()
 	tbb::flow::make_edge(source, fractalGreen);
 	tbb::flow::make_edge(fractalRed, tbb::flow::get<0>(join.input_ports()));
 	tbb::flow::make_edge(fractalGreen, tbb::flow::get<1>(join.input_ports()));
-	tbb::flow::make_edge(join, merge);
-	tbb::flow::make_edge(merge, save);
+	tbb::flow::make_edge(join, combineNode);
+	tbb::flow::make_edge(combineNode, save);
 	source.activate();
 	graph.wait_for_all();
 
@@ -171,7 +170,7 @@ void fractal(Image& image, const int maxN, const double minRe, const double maxR
 	}
 }
 
-Image* mergeImages(const std::string resultFolder, const Image& img1, const Image& img2, const int index)
+Image* combine(const std::string resultFolder, const Image& img1, const Image& img2, const int index)
 {
 	std::string fileNameResult = resultFolder + "img_" + std::to_string(index) + "_Result";
 
