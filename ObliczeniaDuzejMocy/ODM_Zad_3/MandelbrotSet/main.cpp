@@ -17,8 +17,8 @@ Image* mergeImages(const std::string resultFolder, const Image& img1, const Imag
 
 int main()
 {
-	int width = 500;
-	int height = 500;
+	int width = 300;
+	int height = 300;
 	int maxN = 256;
 	std::string resultFolder = "products\\";
 
@@ -108,7 +108,6 @@ int main()
 		}
 	);
 
-
 	tbb::flow::make_edge(source, fractalRed);
 	tbb::flow::make_edge(source, fractalGreen);
 	tbb::flow::make_edge(fractalRed, tbb::flow::get<0>(join.input_ports()));
@@ -122,18 +121,15 @@ int main()
 }
 
 
-
 double makeReal(const int x, const int width, const double minRe, const double maxRe)
 {
 	double range = maxRe - minRe;
-
 	return x * (range / width) + minRe;
 }
 
 double makeImaginary(const int y, const int height, const double minIm, const double maxIm)
 {
 	double range = maxIm - minIm;
-
 	return y * (range / height) + minIm;
 }
 
