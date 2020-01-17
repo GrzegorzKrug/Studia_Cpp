@@ -20,7 +20,7 @@ int main()
 	int width = 300;
 	int height = 300;
 	int maxN = 256;
-	std::string resultFolder = "products\\";
+	std::string resultFolder = "fractals\\";
 
 	std::vector<InputData> input;
 	input.push_back(InputData(-0.1234, 0.4321, -0.3333, 0.4444));
