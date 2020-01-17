@@ -180,9 +180,9 @@ Image* mergeImages(const std::string resultFolder, const Image& img1, const Imag
 	std::string fileNameResult = resultFolder + "img_" + std::to_string(index) + "_Result";
 
 	Image* result = new Image(fileNameResult, img1.getWidth(), img1.getHeight(), img1.getMaxColor());
-	
+
 	for (int y = 0; y < img1.getHeight(); y++)
-	{	
+	{
 		int red = 0, green = 0, blue = 0;
 		for (int x = 0; x < img1.getWidth(); x++)
 		{
