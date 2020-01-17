@@ -9,24 +9,27 @@
 double makeReal(const int x, const int width, const double minRe, const double maxRe);
 double makeImaginary(const int y, const int height, const double minIm, const double maxIm);
 int findValue(const double cr, const double ci, const int maxN);
-void fractal(Image& image, const int maxN, const double minRe, const double maxRe, 
+void fractal(Image& image, const int maxN, const double minRe, const double maxRe,
 	const double minIm, const double maxIm, const Pixel palette);
 
 Image* mergeImages(const std::string resultFolder, const Image& img1, const Image& img2, const int index);
 
+
 int main()
 {
-	int width = 640;
-	int height = 480;
-	int maxN = 255;
+	int width = 500;
+	int height = 500;
+	int maxN = 256;
 	std::string resultFolder = "products\\";
 
 	std::vector<InputData> input;
-	input.push_back(InputData());
-	input.push_back(InputData(-1.0, 0.0, 0.0, 1.0));
+	input.push_back(InputData(-0.1234, 0.4321, -0.3333, 0.4444));
+	input.push_back(InputData(-1, 1, -2, 3));
+	input.push_back(InputData(-1.9, -1.2, 0.23, 0.75));
 	input.push_back(InputData(-0.7463, -0.7513, 0.1102, 0.1152));
+
 	int countSource = 0;
-	int countResults = 1;
+	int countResults = 0;
 
 	tbb::flow::graph graph;
 
@@ -42,16 +45,16 @@ int main()
 			else
 				return false;
 		},
-		false
-	);
+		false // active = false
+			);
 
 	tbb::flow::function_node<InputData, Image*> fractalRed(
 		graph,
 		tbb::flow::unlimited,
-		[&](InputData in) -> Image*
+		[&](InputData in) -> Image *
 		{
-			Pixel palette(20, 1, 1);
-			std::string fileName = resultFolder + "img" + std::to_string(countSource) + "red";
+			Pixel palette(100, 0, 0);
+			std::string fileName = resultFolder + "img_" + std::to_string(countSource) + "_red";
 			Image* result = new Image(fileName, width, height);
 			fractal(*result, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, palette);
 
@@ -62,10 +65,10 @@ int main()
 	tbb::flow::function_node<InputData, Image*> fractalGreen(
 		graph,
 		tbb::flow::unlimited,
-		[&](InputData in) -> Image*
+		[&](InputData in) -> Image *
 		{
-			Pixel palette(1, 20, 1);
-			std::string fileName = resultFolder + "img" + std::to_string(countSource) + "green";
+			Pixel palette(0, 100, 0);
+			std::string fileName = resultFolder + "img_" + std::to_string(countSource) + "_green";
 			Image* result = new Image(fileName, width, height);
 			fractal(*result, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, palette);
 
@@ -73,23 +76,22 @@ int main()
 		}
 	);
 
-	tbb::flow::join_node<tbb::flow::tuple<Image*, Image*>, tbb::flow::queueing> join(graph);
+	tbb::flow::join_node<tbb::flow::tuple<Image*, Image*>> join(graph);
 
-	tbb::flow::function_node
-			<tbb::flow::tuple<Image*, Image*>, std::tuple<Image*, Image*, Image*> > merge(
+	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, std::tuple<Image*, Image*, Image*>> merge(
 		graph,
 		tbb::flow::unlimited,
 		[&](tbb::flow::tuple<Image*, Image*> input) -> std::tuple<Image*, Image*, Image*>
 		{
 			Image* img1 = tbb::flow::get<0>(input);
 			Image* img2 = tbb::flow::get<1>(input);
-			Image* result = mergeImages(resultFolder, *img1, *img2, countResults++);
-				
+			Image* result = mergeImages(resultFolder, *img1, *img2, ++countResults);
+
 			return std::make_tuple(img1, img2, result);
 		}
 	);
 
-	tbb::flow::function_node<std::tuple<Image*, Image*, Image*> > save(
+	tbb::flow::function_node<std::tuple<Image*, Image*, Image*>> save(
 		graph,
 		tbb::flow::unlimited,
 		[&](std::tuple<Image*, Image*, Image*> images) -> void
@@ -106,46 +108,20 @@ int main()
 		}
 	);
 
-	tbb::flow::make_edge(merge, save);
-	tbb::flow::make_edge(join, merge);
-	tbb::flow::make_edge(fractalRed, tbb::flow::get<0>(join.input_ports()));
-	tbb::flow::make_edge(fractalGreen, tbb::flow::get<1>(join.input_ports()));
+
 	tbb::flow::make_edge(source, fractalRed);
 	tbb::flow::make_edge(source, fractalGreen);
+	tbb::flow::make_edge(fractalRed, tbb::flow::get<0>(join.input_ports()));
+	tbb::flow::make_edge(fractalGreen, tbb::flow::get<1>(join.input_ports()));
+	tbb::flow::make_edge(join, merge);
+	tbb::flow::make_edge(merge, save);
 	source.activate();
 	graph.wait_for_all();
 
-	/*
-	Image* img1, * img2, * result;
-
-	for (int i = 0; i < input.size(); i++)
-	{
-		InputData in = input[i];
-		Pixel paletteRed(20, 1, 1);
-		Pixel paletteGreen(1, 20, 1);
-
-		std::string fileNameRed = resultFolder + "img" + std::to_string(i) + "red";
-		Image* img1 = new Image(fileNameRed, width, height);
-		fractal(*img1, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, paletteRed);
-
-		std::string fileNameGreen = resultFolder + "img" + std::to_string(i) + "green";
-		Image* img2 = new Image(fileNameGreen, width, height);
-		fractal(*img2, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, paletteGreen);
-
-		result = mergeImages(resultFolder, *img1, *img2, i);
-
-		img1->saveFile();
-		img2->saveFile();
-		result->saveFile();
-
-		delete img1;
-		delete img2;
-		delete result;
-	}
-	*/
-
 	return 0;
 }
+
+
 
 double makeReal(const int x, const int width, const double minRe, const double maxRe)
 {
@@ -201,17 +177,28 @@ void fractal(Image& image, const int maxN, const double minRe, const double maxR
 
 Image* mergeImages(const std::string resultFolder, const Image& img1, const Image& img2, const int index)
 {
-	std::string fileNameResult = resultFolder + "img" + std::to_string(index) + "result";
+	std::string fileNameResult = resultFolder + "img_" + std::to_string(index) + "_Result";
 
 	Image* result = new Image(fileNameResult, img1.getWidth(), img1.getHeight(), img1.getMaxColor());
-
+	
 	for (int y = 0; y < img1.getHeight(); y++)
-	{
+	{	
+		int red = 0, green = 0, blue = 0;
 		for (int x = 0; x < img1.getWidth(); x++)
 		{
-			int b = img1.getMaxColor() 
-				- (img1.getPixel(x, y).getR() * img2.getPixel(x, y).getG()) % result->getMaxColor();
-			Pixel p(1, 1, b);
+
+			red = img1.getPixel(x, y).getR();
+			green = img2.getPixel(x, y).getG();
+			blue = (red + green) / 2;
+
+			/*if (red % 2 == 0) {
+				green = 0;
+			}
+			else {
+				red = 0;
+			}*/
+
+			Pixel p(0, 0, blue);
 			result->setPixel(x, y, p);
 		}
 	}
