@@ -13,7 +13,7 @@ void fractal(Image& image, const int maxN, const double minRe, const double maxR
 	const double minIm, const double maxIm, const Pixel palette);
 
 Image* combine(const std::string resultFolder, const Image& img1, const Image& img2, const int index);
-
+using namespace std;
 
 int main()
 {
@@ -22,25 +22,24 @@ int main()
 	int maxN = 256;
 	std::string resultFolder = "fractals\\";
 
-	std::vector<InputData> input;
-	input.push_back(InputData(-0.1234, 0.4321, -0.3333, 0.4444));
-	input.push_back(InputData(-1, 1, -2, 3));
-	input.push_back(InputData(-1.9, -1.2, 0.23, 0.75));
-	input.push_back(InputData(-0.7463, -0.7513, 0.1102, 0.1152));
-	input.push_back(InputData(-0.5063, -0.4513, 0.09102, 0.1152));
+	std::vector<tuple<InputData, int>> input;
+	input.push_back(make_tuple(InputData(-0.1234, 0.4321, -0.3333, 0.4444), 1));
+	input.push_back(make_tuple(InputData(-1, 1, -2, 3), 2));
+	input.push_back(make_tuple(InputData(-1.9, -1.2, 0.23, 0.75), 3));
+	input.push_back(make_tuple(InputData(-0.7463, -0.7513, 0.1102, 0.1152), 4));
+	input.push_back(make_tuple(InputData(-1.95, -1.99, 0.102, 0.452), 5));
 	std::cout << input.size() << "\n";
 	int countSource = 0;
 	int countResults = 0;
 
 	tbb::flow::graph graph;
-
 	tbb::flow::source_node<InputData> source(
 		graph,
 		[&countSource, &input](InputData& in) -> bool
 		{
 			if (countSource < input.size())
 			{
-				in = input[countSource++];
+				in = get<0>(input[countSource++]);
 				//std::cout << ("\t" + std::to_string(countSource) + "\n");
 				return true;
 			}
@@ -82,7 +81,7 @@ int main()
 
 	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, tbb::flow::tuple<Image*, Image*, Image*>> combineNode(
 		graph,
-		1,
+		0,
 		[&countResults, &resultFolder](tbb::flow::tuple<Image*, Image*> input) -> std::tuple<Image*, Image*, Image*>
 		{
 			Image* img1 = tbb::flow::get<0>(input);
