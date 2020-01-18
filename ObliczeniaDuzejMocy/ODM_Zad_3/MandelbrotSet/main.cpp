@@ -27,7 +27,8 @@ int main()
 	input.push_back(InputData(-1, 1, -2, 3));
 	input.push_back(InputData(-1.9, -1.2, 0.23, 0.75));
 	input.push_back(InputData(-0.7463, -0.7513, 0.1102, 0.1152));
-	std::cout << input.size();
+	input.push_back(InputData(-0.5063, -0.4513, 0.09102, 0.1152));
+	std::cout << input.size() << "\n";
 	int countSource = 0;
 	int countResults = 0;
 
@@ -35,11 +36,12 @@ int main()
 
 	tbb::flow::source_node<InputData> source(
 		graph,
-		[&](InputData& in) -> bool
+		[&countSource, &input](InputData& in) -> bool
 		{
 			if (countSource < input.size())
 			{
 				in = input[countSource++];
+				//std::cout << ("\t" + std::to_string(countSource) + "\n");
 				return true;
 			}
 			else
@@ -51,23 +53,24 @@ int main()
 	tbb::flow::function_node<InputData, Image*> fractalRed(
 		graph,
 		0,
-		[&](InputData in) -> Image *
+		[&resultFolder, &width, &height, &maxN, &countSource](InputData in) -> Image *
 		{
 			Pixel palette(100, 0, 0);
 			std::string fileName = resultFolder + "img_" + std::to_string(countSource) + "_red";
+			std::cout << ("start: " + fileName + "\n");
 			Image* result = new Image(fileName, width, height);
 			fractal(*result, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, palette);
-
 			return result;
 		}
 	);
 	tbb::flow::function_node<InputData, Image*> fractalGreen(
 		graph,
 		0,
-		[&](InputData in) -> Image *
+		[&resultFolder, &width, &height, &maxN, &countSource](InputData in) -> Image *
 		{
 			Pixel palette(0, 100, 0);
 			std::string fileName = resultFolder + "img_" + std::to_string(countSource) + "_green";
+			std::cout << ("start: " + fileName + "\n");
 			Image* result = new Image(fileName, width, height);
 			fractal(*result, maxN, in.minRe, in.maxRe, in.minIm, in.maxIm, palette);
 
@@ -77,10 +80,10 @@ int main()
 
 	tbb::flow::join_node<tbb::flow::tuple<Image*, Image*>, tbb::flow::queueing> join(graph);
 
-	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, std::tuple<Image*, Image*, Image*>> combineNode(
+	tbb::flow::function_node<tbb::flow::tuple<Image*, Image*>, tbb::flow::tuple<Image*, Image*, Image*>> combineNode(
 		graph,
-		0,
-		[&](tbb::flow::tuple<Image*, Image*> input) -> std::tuple<Image*, Image*, Image*>
+		1,
+		[&countResults, &resultFolder](tbb::flow::tuple<Image*, Image*> input) -> std::tuple<Image*, Image*, Image*>
 		{
 			Image* img1 = tbb::flow::get<0>(input);
 			Image* img2 = tbb::flow::get<1>(input);
